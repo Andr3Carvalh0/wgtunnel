@@ -1,4 +1,0 @@
-Was ist neu?
-- Behebt Auto-Tunneling-Fehler
-- Behebt Android-Backup-Fehler
-- Versionen erhöhen
