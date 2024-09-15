@@ -1,5 +1,0 @@
-Was ist neu?
-- Zusätzliche Sprachunterstützung
-- Fehler beim automatischen Tunneln von mobilen Daten behoben
-- AndroidTV-Schaltfläche für schwebende Aktionen behoben
-- Weitere Optimierungen und Erweiterungen
