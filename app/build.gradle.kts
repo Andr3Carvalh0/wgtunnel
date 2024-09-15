@@ -79,8 +79,8 @@ android {
 		debug {
 			applicationIdSuffix = ".debug"
 			versionNameSuffix = "-debug"
-			resValue("string", "app_name", "WG Tunnel - Debug")
 			isDebuggable = true
+			resValue("string", "app_name", "PiVPN - Debug")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.debug\"")
 		}
 
@@ -88,7 +88,7 @@ android {
 			initWith(buildTypes.getByName(Constants.RELEASE))
 			applicationIdSuffix = ".prerelease"
 			versionNameSuffix = "-pre"
-			resValue("string", "app_name", "WG Tunnel - Pre")
+			resValue("string", "app_name", "PiVPN - Pre")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.pre\"")
 		}
 
@@ -96,7 +96,7 @@ android {
 			initWith(buildTypes.getByName(Constants.RELEASE))
 			applicationIdSuffix = ".nightly"
 			versionNameSuffix = "-nightly"
-			resValue("string", "app_name", "WG Tunnel - Nightly")
+			resValue("string", "app_name", "PiVPN - Nightly")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.nightly\"")
 		}
 
