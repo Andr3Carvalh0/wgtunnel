@@ -98,7 +98,7 @@ constructor(
 				.setOngoing(onGoing)
 				.setPriority(NotificationCompat.PRIORITY_HIGH)
 				.setShowWhen(showTimestamp)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.vpn_on)
 				.build()
 		}
 	}
