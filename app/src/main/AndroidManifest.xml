@@ -12,7 +12,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!--foreground service exempt android 14-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+
+    <uses-permission
+		android:name="android.permission.SCHEDULE_EXACT_ALARM"
 		tools:ignore="ProtectedPermissions" />
 
     <!--foreground service permissions-->
@@ -28,9 +30,6 @@
 		android:icon="@mipmap/ic_launcher"
 		android:protectionLevel="dangerous" />
 
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -55,7 +54,6 @@
     <application
         android:name=".WireGuardAutoTunnel"
         android:allowBackup="false"
-        android:banner="@drawable/ic_banner"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
@@ -75,7 +73,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
             <meta-data
@@ -110,8 +107,8 @@
         <service
             android:name=".service.tile.TunnelControlTile"
             android:exported="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="Tunnel control"
+            android:icon="@drawable/vpn_on"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <meta-data
                 android:name="android.service.quicksettings.ACTIVE_TILE"
@@ -119,7 +116,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
-
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
@@ -127,7 +123,7 @@
         <service
             android:name=".service.tile.AutoTunnelControlTile"
             android:exported="true"
-            android:icon="@drawable/ic_launcher"
+			android:icon="@drawable/vpn_on"
             android:label="Auto-tunnel"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <meta-data
@@ -136,7 +132,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
-
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
