@@ -104,20 +104,33 @@ jobs:
           force_push_tag: true
           tag_exists_error: false
 
+<<<<<<< HEAD
       - name: Get latest release
         id: latest_release
         uses: kaliber5/action-get-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest: true
+=======
+      - name: Create latest tag
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "latest"
+>>>>>>> d1fbe2a (chore: changelog to releases)
 
       - name: Generate Changelog
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+<<<<<<< HEAD
           toTag: ${{ github.event_name == 'schedule' && 'nightly' || steps.latest_release.outputs.tag_name }}
           fromTag: "latest"
+=======
+          fromTag: ${{ github.event_name == 'schedule' && 'nightly' || steps.latest_release.outputs.tag_name }}
+          toTag: "latest"
+>>>>>>> d1fbe2a (chore: changelog to releases)
           writeToFile: false  # we won't write to file, just output
 
       # create keystore path for gradle to read
