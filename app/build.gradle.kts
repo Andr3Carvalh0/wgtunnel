@@ -81,6 +81,7 @@ android {
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro",
 			)
+			applicationIdSuffix = ".pro"
 			signingConfig = signingConfigs.getByName(Constants.RELEASE)
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider\"")
 		}
