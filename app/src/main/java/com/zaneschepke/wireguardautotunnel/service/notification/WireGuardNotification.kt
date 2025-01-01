@@ -60,7 +60,7 @@ constructor(
 			setOngoing(onGoing)
 			setPriority(NotificationCompat.PRIORITY_HIGH)
 			setShowWhen(showTimestamp)
-			setSmallIcon(R.drawable.ic_launcher)
+			setSmallIcon(R.drawable.vpn_on)
 		}.build()
 	}
 
@@ -74,7 +74,7 @@ constructor(
 			PendingIntent.FLAG_IMMUTABLE,
 		)
 		return NotificationCompat.Action.Builder(
-			R.drawable.ic_launcher,
+			R.drawable.vpn_on,
 			notificationAction.title(context).uppercase(),
 			pendingIntent,
 		).build()
