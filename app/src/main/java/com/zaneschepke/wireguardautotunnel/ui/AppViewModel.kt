@@ -1,6 +1,7 @@
 package com.zaneschepke.wireguardautotunnel.ui
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wireguard.android.backend.WgQuickBackend
@@ -281,9 +282,10 @@ constructor(
 		withContext(ioDispatcher) {
 			val apps = context.getAllInternetCapablePackages().filter { it.applicationInfo != null }.map { pack ->
 				SplitTunnelApp(
-					context.packageManager.getApplicationIcon(pack.applicationInfo!!),
-					context.packageManager.getApplicationLabel(pack.applicationInfo!!).toString(),
-					pack.packageName,
+					icon = context.packageManager.getApplicationIcon(pack.applicationInfo!!),
+					name = context.packageManager.getApplicationLabel(pack.applicationInfo!!).toString(),
+					`package` = pack.packageName,
+					isSystem = pack.applicationInfo?.let { (it.flags and ApplicationInfo.FLAG_SYSTEM) != 0 } ?: false
 				)
 			}
 			_splitTunnelApps.emit(apps)

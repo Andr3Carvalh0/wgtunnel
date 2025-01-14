@@ -82,6 +82,7 @@
     <string name="delete_tunnel_message">Are you sure you would like to delete this tunnel?</string>
     <string name="yes">Yes</string>
     <string name="tunneling_apps">Tunneling apps</string>
+	<string name="exclude_system_apps">Exclude System apps</string>
 	<string name="all">all</string>
     <string name="no_email_detected">No email app detected</string>
     <string name="no_browser_detected">No browser detected</string>
