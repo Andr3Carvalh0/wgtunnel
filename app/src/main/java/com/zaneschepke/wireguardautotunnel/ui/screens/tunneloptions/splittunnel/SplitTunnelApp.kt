@@ -6,4 +6,5 @@ data class SplitTunnelApp(
 	val icon: Drawable,
 	val name: String,
 	val `package`: String,
+	val isSystem: Boolean,
 )
