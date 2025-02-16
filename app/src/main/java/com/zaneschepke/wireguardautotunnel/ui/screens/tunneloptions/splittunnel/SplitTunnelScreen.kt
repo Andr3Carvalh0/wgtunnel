@@ -28,6 +28,7 @@ import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,8 +43,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Switch
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -96,10 +99,25 @@ fun SplitTunnelScreen(tunnelConfig: TunnelConfig, viewModel: AppViewModel) {
 	}
 
 	var query: String by remember { mutableStateOf("") }
+	var excludeSystemApps: Boolean by remember { mutableStateOf(false) }
 
 	val sortedPackages by remember {
 		derivedStateOf {
-			splitTunnelApps.sortedWith(compareBy(collator) { it.name }).filter { it.name.lowercase().contains(query.lowercase()) }.toMutableStateList()
+			splitTunnelApps.sortedWith(compareBy(collator) { it.name })
+				.filter { application ->
+					if (excludeSystemApps) {
+						!application.isSystem
+					} else {
+						true
+					}
+				}
+				.filter {
+					if (query.isNotEmpty()) {
+						it.name.lowercase().contains(query.lowercase())
+					} else {
+						true
+					}
+				}.toMutableStateList()
 		}
 	}
 
@@ -216,6 +234,26 @@ fun SplitTunnelScreen(tunnelConfig: TunnelConfig, viewModel: AppViewModel) {
 						),
 						keyboardActions = KeyboardActions(),
 					)
+					Row(
+						modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp.scaledWidth()),
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically,
+					) {
+						Text(
+							stringResource(R.string.exclude_system_apps),
+							style = MaterialTheme.typography.labelMedium,
+							color = MaterialTheme.colorScheme.onSurface,
+							modifier = Modifier.fillMaxWidth(3 / 4f),
+							maxLines = 2,
+							overflow = TextOverflow.Ellipsis,
+						)
+
+						Switch(
+							checked = excludeSystemApps,
+							onCheckedChange = { excludeSystemApps = it },
+						)
+					}
+
 					LazyColumn(
 						horizontalAlignment = Alignment.CenterHorizontally,
 						verticalArrangement = Arrangement.Top,
