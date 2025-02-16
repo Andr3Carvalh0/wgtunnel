@@ -93,26 +93,22 @@ data class Settings(
 	val isDisableKillSwitchOnTrustedEnabled: Boolean = false,
 ) {
 
-	fun toAppSettings(): AppSettings {
-		return AppSettings(
-			id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs, isAlwaysOnVpnEnabled, isTunnelOnEthernetEnabled,
-			isShortcutsEnabled, isTunnelOnWifiEnabled, isKernelEnabled, isRestoreOnBootEnabled, isMultiTunnelEnabled, isPingEnabled,
-			isAmneziaEnabled, isWildcardsEnabled, isWifiNameByShellEnabled, isStopOnNoInternetEnabled, isVpnKillSwitchEnabled,
-			isKernelKillSwitchEnabled, isLanOnKillSwitchEnabled, debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
-		)
-	}
+	fun toAppSettings(): AppSettings = AppSettings(
+		id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs, isAlwaysOnVpnEnabled, isTunnelOnEthernetEnabled,
+		isShortcutsEnabled, isTunnelOnWifiEnabled, isKernelEnabled, isRestoreOnBootEnabled, isMultiTunnelEnabled, isPingEnabled,
+		isAmneziaEnabled, isWildcardsEnabled, isStopOnNoInternetEnabled, isVpnKillSwitchEnabled,
+		isLanOnKillSwitchEnabled, debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
+	)
 
 	companion object {
-		fun from(appSettings: AppSettings): Settings {
-			return with(appSettings) {
-				Settings(
-					id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs.toMutableList(), isAlwaysOnVpnEnabled,
-					isTunnelOnEthernetEnabled, isShortcutsEnabled, isTunnelOnWifiEnabled, isKernelEnabled, isRestoreOnBootEnabled,
-					isMultiTunnelEnabled, isPingEnabled, isAmneziaEnabled, isWildcardsEnabled, isWifiNameByShellEnabled,
-					isStopOnNoInternetEnabled, isVpnKillSwitchEnabled, isKernelKillSwitchEnabled, isLanOnKillSwitchEnabled,
-					debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
-				)
-			}
+		fun from(appSettings: AppSettings): Settings = with(appSettings) {
+			Settings(
+				id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs.toMutableList(), isAlwaysOnVpnEnabled,
+				isTunnelOnEthernetEnabled, isShortcutsEnabled, isTunnelOnWifiEnabled, false, isRestoreOnBootEnabled,
+				isMultiTunnelEnabled, isPingEnabled, isAmneziaEnabled, isWildcardsEnabled, false,
+				isStopOnNoInternetEnabled, isVpnKillSwitchEnabled, isKernelKillSwitchEnabled, isLanOnKillSwitchEnabled,
+				debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
+			)
 		}
 	}
 }

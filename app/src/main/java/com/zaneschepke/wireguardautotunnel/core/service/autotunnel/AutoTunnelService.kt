@@ -7,10 +7,8 @@ import android.os.PowerManager
 import androidx.core.app.ServiceCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.wireguard.android.util.RootShell
 import com.zaneschepke.wireguardautotunnel.R
 import com.zaneschepke.wireguardautotunnel.domain.repository.AppDataRepository
-import com.zaneschepke.wireguardautotunnel.di.AppShell
 import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
 import com.zaneschepke.wireguardautotunnel.di.MainImmediateDispatcher
 import com.zaneschepke.wireguardautotunnel.core.service.ServiceManager
@@ -29,7 +27,6 @@ import com.zaneschepke.wireguardautotunnel.domain.events.AutoTunnelEvent
 import com.zaneschepke.wireguardautotunnel.domain.events.KillSwitchEvent
 import com.zaneschepke.wireguardautotunnel.util.Constants
 import com.zaneschepke.wireguardautotunnel.util.extensions.Tunnels
-import com.zaneschepke.wireguardautotunnel.util.extensions.getCurrentWifiName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
@@ -48,10 +45,6 @@ import javax.inject.Provider
 
 @AndroidEntryPoint
 class AutoTunnelService : LifecycleService() {
-
-	@Inject
-	@AppShell
-	lateinit var rootShell: Provider<RootShell>
 
 	@Inject
 	lateinit var networkMonitor: NetworkMonitor
@@ -161,23 +154,21 @@ class AutoTunnelService : LifecycleService() {
 		}
 	}
 
-	private suspend fun buildNetworkState(connectivityState: ConnectivityState): NetworkState {
-		return with(autoTunnelStateFlow.value.networkState) {
-			val wifiName = when {
-				connectivityState.wifiAvailable &&
-					(wifiName == null || wifiName == Constants.UNREADABLE_SSID || networkMonitor.didWifiChangeSinceLastCapabilitiesQuery) -> {
-					networkMonitor.getWifiCapabilities()?.let { getWifiName(it) } ?: wifiName
-				}
-				!connectivityState.wifiAvailable -> null
-				else -> wifiName
+	private suspend fun buildNetworkState(connectivityState: ConnectivityState): NetworkState = with(autoTunnelStateFlow.value.networkState) {
+		val wifiName = when {
+			connectivityState.wifiAvailable &&
+				(wifiName == null || wifiName == Constants.UNREADABLE_SSID || networkMonitor.didWifiChangeSinceLastCapabilitiesQuery) -> {
+				networkMonitor.getWifiCapabilities()?.let { getWifiName(it) } ?: wifiName
 			}
-			copy(
-				isWifiConnected = connectivityState.wifiAvailable,
-				isMobileDataConnected = connectivityState.cellularAvailable,
-				isEthernetConnected = isEthernetConnected,
-				wifiName = wifiName,
-			)
+			!connectivityState.wifiAvailable -> null
+			else -> wifiName
 		}
+		copy(
+			isWifiConnected = connectivityState.wifiAvailable,
+			isMobileDataConnected = connectivityState.cellularAvailable,
+			isEthernetConnected = isEthernetConnected,
+			wifiName = wifiName,
+		)
 	}
 
 	private fun startAutoTunnelStateJob() = lifecycleScope.launch(ioDispatcher) {
@@ -195,26 +186,18 @@ class AutoTunnelService : LifecycleService() {
 		}
 	}
 
-	private suspend fun getWifiName(wifiCapabilities: NetworkCapabilities): String? {
-		val setting = appDataRepository.get().settings.get()
-		return if (setting.isWifiNameByShellEnabled) {
-			rootShell.get().getCurrentWifiName()
-		} else {
-			InternetConnectivityMonitor.getNetworkName(wifiCapabilities, this@AutoTunnelService)
-		}
-	}
+	private suspend fun getWifiName(wifiCapabilities: NetworkCapabilities): String? =
+		InternetConnectivityMonitor.getNetworkName(wifiCapabilities, this@AutoTunnelService)
 
-	private fun combineSettings(): Flow<Pair<AppSettings, Tunnels>> {
-		return combine(
-			appDataRepository.get().settings.flow,
-			appDataRepository.get().tunnels.flow.map { tunnels ->
-				// isActive is ignored for equality checks so user can manually toggle off tunnel with auto-tunnel
-				tunnels.map { it.copy(isActive = false) }
-			},
-		) { settings, tunnels ->
-			Pair(settings, tunnels)
-		}.distinctUntilChanged()
-	}
+	private fun combineSettings(): Flow<Pair<AppSettings, Tunnels>> = combine(
+		appDataRepository.get().settings.flow,
+		appDataRepository.get().tunnels.flow.map { tunnels ->
+			// isActive is ignored for equality checks so user can manually toggle off tunnel with auto-tunnel
+			tunnels.map { it.copy(isActive = false) }
+		},
+	) { settings, tunnels ->
+		Pair(settings, tunnels)
+	}.distinctUntilChanged()
 
 	private fun startKillSwitchJob() = lifecycleScope.launch(ioDispatcher) {
 		autoTunnelStateFlow.collect {

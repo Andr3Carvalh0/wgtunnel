@@ -12,7 +12,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!--foreground service exempt android 14-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+
+    <uses-permission
+		android:name="android.permission.SCHEDULE_EXACT_ALARM"
 		tools:ignore="ProtectedPermissions" />
 
     <!--foreground service permissions-->
@@ -28,9 +30,6 @@
 		android:icon="@mipmap/ic_launcher"
 		android:protectionLevel="dangerous" />
 
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -55,7 +54,6 @@
     <application
         android:name=".WireGuardAutoTunnel"
         android:allowBackup="false"
-        android:banner="@drawable/ic_banner"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
@@ -118,7 +116,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
-
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
@@ -135,7 +132,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
-
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>

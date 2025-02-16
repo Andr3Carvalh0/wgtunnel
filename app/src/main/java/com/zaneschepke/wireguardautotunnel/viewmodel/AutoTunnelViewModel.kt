@@ -1,9 +1,7 @@
 package com.zaneschepke.wireguardautotunnel.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.wireguard.android.util.RootShell
 import com.zaneschepke.wireguardautotunnel.R
-import com.zaneschepke.wireguardautotunnel.di.AppShell
 import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
 import com.zaneschepke.wireguardautotunnel.domain.repository.AppDataRepository
 import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
@@ -12,18 +10,11 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.withData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Provider
 
 @HiltViewModel
-class AutoTunnelViewModel
-@Inject
-constructor(
-	appDataRepository: AppDataRepository,
-	@AppShell private val rootShell: Provider<RootShell>,
-	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : BaseViewModel(appDataRepository) {
+class AutoTunnelViewModel @Inject constructor(appDataRepository: AppDataRepository, @IoDispatcher private val ioDispatcher: CoroutineDispatcher) :
+	BaseViewModel(appDataRepository) {
 
 	fun onToggleTunnelOnWifi() = viewModelScope.launch {
 		appSettings.withData {
@@ -62,27 +53,6 @@ constructor(
 					trustedNetworkSSIDs = (it.trustedNetworkSSIDs - ssid).toMutableList(),
 				),
 			)
-		}
-	}
-
-	fun onRootShellWifiToggle() = viewModelScope.launch {
-		requestRoot().onSuccess {
-			appSettings.withData {
-				saveAppSettings(
-					it.copy(isWifiNameByShellEnabled = !it.isWifiNameByShellEnabled),
-				)
-			}
-		}
-	}
-
-	private suspend fun requestRoot(): Result<Unit> {
-		return withContext(ioDispatcher) {
-			runCatching {
-				rootShell.get().start()
-				SnackbarController.Companion.showMessage(StringValue.StringResource(R.string.root_accepted))
-			}.onFailure {
-				SnackbarController.Companion.showMessage(StringValue.StringResource(R.string.error_root_denied))
-			}
 		}
 	}
 

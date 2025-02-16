@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Circle
 import androidx.compose.material.icons.rounded.CopyAll
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.SettingsEthernet
 import androidx.compose.material.icons.rounded.Smartphone
@@ -21,19 +20,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
-import com.zaneschepke.wireguardautotunnel.R
 import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 import com.zaneschepke.wireguardautotunnel.domain.state.TunnelState
 import com.zaneschepke.wireguardautotunnel.ui.Route
 import com.zaneschepke.wireguardautotunnel.ui.common.ExpandingRowListItem
 import com.zaneschepke.wireguardautotunnel.ui.common.button.ScaledSwitch
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavController
-import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
 import com.zaneschepke.wireguardautotunnel.util.extensions.asColor
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 
 @Composable
 fun TunnelRowItem(
@@ -49,8 +44,7 @@ fun TunnelRowItem(
 	onSwitchClick: (checked: Boolean) -> Unit,
 ) {
 	val leadingIconColor = if (!isActive) Color.Gray else tunnelState.statistics.asColor()
-	val context = LocalContext.current
-	val snackbar = SnackbarController.current
+
 	val navController = LocalNavController.current
 	val haptic = LocalHapticFeedback.current
 	val itemFocusRequester = remember { FocusRequester() }
@@ -75,22 +69,14 @@ fun TunnelRowItem(
 			onHold()
 		},
 		onClick = {
-			if (!context.isRunningOnTv()) {
-				if (isActive) {
-					onClick()
-				}
-			} else {
-				onHold()
-				itemFocusRequester.requestFocus()
+			if (isActive) {
+				onClick()
 			}
 		},
 		isExpanded = expanded && isActive,
 		expanded = { if (isActive && expanded) TunnelStatisticsRow(tunnelState.statistics, tunnel) },
 		trailing = {
-			if (
-				isSelected &&
-				!context.isRunningOnTv()
-			) {
+			if (isSelected) {
 				Row {
 					IconButton(
 						onClick = {
@@ -122,73 +108,11 @@ fun TunnelRowItem(
 					}
 				}
 			} else {
-				if (context.isRunningOnTv()) {
-					Row {
-						IconButton(
-							onClick = {
-								onHold()
-								navController.navigate(
-									Route.TunnelOptions(tunnel.id),
-								)
-							},
-						) {
-							val icon = Icons.Rounded.Settings
-							Icon(
-								icon,
-								icon.name,
-							)
-						}
-						IconButton(
-							onClick = {
-								if (isActive) {
-									onClick()
-								} else {
-									snackbar.showMessage(
-										context.getString(R.string.turn_on_tunnel),
-									)
-								}
-							},
-						) {
-							val icon = Icons.Rounded.Info
-							Icon(icon, icon.name)
-						}
-						IconButton(
-							onClick = { onCopy() },
-						) {
-							val icon = Icons.Rounded.CopyAll
-							Icon(icon, icon.name)
-						}
-						IconButton(
-							onClick = {
-								if (isActive) {
-									snackbar.showMessage(
-										context.getString(R.string.turn_off_tunnel),
-									)
-								} else {
-									onHold()
-									onDelete()
-								}
-							},
-						) {
-							val icon = Icons.Rounded.Delete
-							Icon(
-								icon,
-								icon.name,
-							)
-						}
-						ScaledSwitch(
-							modifier = Modifier.focusRequester(itemFocusRequester),
-							checked = isActive,
-							onClick = onSwitchClick,
-						)
-					}
-				} else {
-					ScaledSwitch(
-						modifier = Modifier.focusRequester(itemFocusRequester),
-						checked = isActive,
-						onClick = onSwitchClick,
-					)
-				}
+				ScaledSwitch(
+					modifier = Modifier.focusRequester(itemFocusRequester),
+					checked = isActive,
+					onClick = onSwitchClick,
+				)
 			}
 		},
 	)

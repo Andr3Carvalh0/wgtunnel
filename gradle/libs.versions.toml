@@ -20,7 +20,7 @@ pinLockCompose = "1.0.4"
 roomVersion = "2.6.1"
 timber = "5.0.1"
 tunnel = "1.2.2"
-androidGradlePlugin = "8.8.0-alpha05"
+androidGradlePlugin = "8.8.1"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.30"
 composeBom = "2025.02.00"
@@ -32,7 +32,6 @@ gradlePlugins-grgit = "5.3.0"
 #plugins
 material = "1.12.0"
 gradlePlugins-ktlint="12.1.2"
-
 
 [libraries]
 

@@ -2,14 +2,9 @@ package com.zaneschepke.wireguardautotunnel.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.wireguard.android.backend.WgQuickBackend
-import com.wireguard.android.util.RootShell
-import com.zaneschepke.logcatter.LogReader
 import com.zaneschepke.wireguardautotunnel.R
-import com.zaneschepke.wireguardautotunnel.WireGuardAutoTunnel
 import com.zaneschepke.wireguardautotunnel.core.service.ServiceManager
 import com.zaneschepke.wireguardautotunnel.core.tunnel.TunnelManager
-import com.zaneschepke.wireguardautotunnel.di.AppShell
 import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
 import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 import com.zaneschepke.wireguardautotunnel.domain.enums.BackendState
@@ -42,9 +37,7 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import org.amnezia.awg.config.Config
 import timber.log.Timber
-import xyz.teamgravity.pin_lock_compose.PinManager
 import javax.inject.Inject
-import javax.inject.Provider
 
 @HiltViewModel
 class AppViewModel
@@ -52,10 +45,8 @@ class AppViewModel
 constructor(
 	appDataRepository: AppDataRepository,
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-	@AppShell private val rootShell: Provider<RootShell>,
 	private val tunnelManager: TunnelManager,
 	private val serviceManager: ServiceManager,
-	private val logReader: LogReader,
 ) : BaseViewModel(appDataRepository) {
 
 	private val _popBackStack = MutableSharedFlow<Boolean>()
@@ -91,7 +82,6 @@ constructor(
 
 	init {
 		viewModelScope.launch {
-			initPin()
 			handleKillSwitchChange()
 			initServices()
 			launch {
@@ -116,11 +106,6 @@ constructor(
 		}
 	}
 
-	private suspend fun initPin() {
-		val isPinEnabled = appDataRepository.appState.isPinLockEnabled()
-		if (isPinEnabled) PinManager.initialize(WireGuardAutoTunnel.instance)
-	}
-
 	private suspend fun initServices() {
 		withContext(ioDispatcher) {
 			appSettings.withData {
@@ -129,32 +114,8 @@ constructor(
 		}
 	}
 
-	fun onPinLockDisabled() = viewModelScope.launch(ioDispatcher) {
-		PinManager.clearPin()
-		appDataRepository.appState.setPinLockEnabled(false)
-	}
-
-	fun onPinLockEnabled() = viewModelScope.launch {
-		appDataRepository.appState.setPinLockEnabled(true)
-	}
-
 	fun setLocationDisclosureShown() = viewModelScope.launch {
 		appDataRepository.appState.setLocationDisclosureShown(true)
-	}
-
-	fun onToggleLocalLogging() = viewModelScope.launch(ioDispatcher) {
-		with(uiState.value.generalState) {
-			val toggledOn = !isLocalLogsEnabled
-			appDataRepository.appState.setLocalLogsEnabled(toggledOn)
-			if (!toggledOn) onLoggerStop()
-			_configurationChange.update {
-				true
-			}
-		}
-	}
-
-	private suspend fun onLoggerStop() {
-		logReader.deleteAndClearLogs()
 	}
 
 	fun onToggleAlwaysOnVPN() = viewModelScope.launch {
@@ -227,45 +188,6 @@ constructor(
 		}
 	}
 
-	private fun saveKernelMode(enabled: Boolean) = viewModelScope.launch {
-		with(uiState.value.appSettings) {
-			appDataRepository.settings.save(
-				this.copy(
-					isKernelEnabled = enabled,
-				),
-			)
-		}
-	}
-
-	fun onToggleKernelMode() = viewModelScope.launch {
-		with(uiState.value.appSettings) {
-			if (!isKernelEnabled) {
-				requestRoot().onSuccess {
-					if (!isKernelSupported()) {
-						return@onSuccess SnackbarController.Companion.showMessage(
-							StringValue.StringResource(R.string.kernel_not_supported),
-						)
-					}
-					tunnelManager.setBackendState(BackendState.INACTIVE, emptyList())
-					appDataRepository.settings.save(
-						copy(
-							isKernelEnabled = true,
-							isAmneziaEnabled = false,
-						),
-					)
-				}
-			} else {
-				saveKernelMode(enabled = false)
-			}
-		}
-	}
-
-	private suspend fun isKernelSupported(): Boolean {
-		return withContext(ioDispatcher) {
-			WgQuickBackend.hasKernelSupport()
-		}
-	}
-
 	suspend fun getEmitSplitTunnelApps(context: Context) {
 		withContext(ioDispatcher) {
 			val apps = context.getAllInternetCapablePackages().filter { it.applicationInfo != null }
@@ -278,17 +200,6 @@ constructor(
 					)
 				}
 			_splitTunnelApps.emit(apps)
-		}
-	}
-
-	suspend fun requestRoot(): Result<Unit> {
-		return withContext(ioDispatcher) {
-			runCatching {
-				rootShell.get().start()
-				SnackbarController.Companion.showMessage(StringValue.StringResource(R.string.root_accepted))
-			}.onFailure {
-				SnackbarController.Companion.showMessage(StringValue.StringResource(R.string.error_root_denied))
-			}
 		}
 	}
 
@@ -373,23 +284,21 @@ constructor(
 		wgConfig: com.wireguard.config.Config,
 		peers: List<PeerProxy>? = null,
 		`interface`: InterfaceProxy? = null,
-	): Pair<com.wireguard.config.Config, Config> {
-		return withContext(ioDispatcher) {
-			Pair(
-				com.wireguard.config.Config.Builder().apply {
-					addPeers(peers?.map { it.toWgPeer() } ?: wgConfig.peers)
-					setInterface(`interface`?.toWgInterface() ?: wgConfig.`interface`)
-				}.build(),
-				Config.Builder().apply {
-					addPeers(peers?.map { it.toAmPeer() } ?: amConfig.peers)
-					setInterface(`interface`?.toAmInterface() ?: amConfig.`interface`)
-				}.build(),
-			)
-		}
+	): Pair<com.wireguard.config.Config, Config> = withContext(ioDispatcher) {
+		Pair(
+			com.wireguard.config.Config.Builder().apply {
+				addPeers(peers?.map { it.toWgPeer() } ?: wgConfig.peers)
+				setInterface(`interface`?.toWgInterface() ?: wgConfig.`interface`)
+			}.build(),
+			Config.Builder().apply {
+				addPeers(peers?.map { it.toAmPeer() } ?: amConfig.peers)
+				setInterface(`interface`?.toAmInterface() ?: amConfig.`interface`)
+			}.build(),
+		)
 	}
 
-	private suspend fun buildConfigs(peers: List<PeerProxy>, `interface`: InterfaceProxy): Pair<com.wireguard.config.Config, Config> {
-		return withContext(ioDispatcher) {
+	private suspend fun buildConfigs(peers: List<PeerProxy>, `interface`: InterfaceProxy): Pair<com.wireguard.config.Config, Config> =
+		withContext(ioDispatcher) {
 			Pair(
 				com.wireguard.config.Config.Builder().apply {
 					addPeers(peers.map { it.toWgPeer() })
@@ -401,5 +310,4 @@ constructor(
 				}.build(),
 			)
 		}
-	}
 }

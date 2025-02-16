@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,7 +45,6 @@ import com.zaneschepke.wireguardautotunnel.ui.common.NestedScrollListener
 import com.zaneschepke.wireguardautotunnel.ui.common.dialog.InfoDialog
 import com.zaneschepke.wireguardautotunnel.ui.common.functions.rememberFileImportLauncherForResult
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavController
-import com.zaneschepke.wireguardautotunnel.ui.common.navigation.TopNavBar
 import com.zaneschepke.wireguardautotunnel.ui.common.permission.vpn.withVpnPermission
 import com.zaneschepke.wireguardautotunnel.ui.common.permission.withIgnoreBatteryOpt
 import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
@@ -56,7 +54,6 @@ import com.zaneschepke.wireguardautotunnel.ui.screens.main.components.ScrollDism
 import com.zaneschepke.wireguardautotunnel.ui.screens.main.components.TunnelImportSheet
 import com.zaneschepke.wireguardautotunnel.ui.screens.main.components.TunnelRowItem
 import com.zaneschepke.wireguardautotunnel.util.Constants
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.openWebUrl
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.viewmodel.MainViewModel
@@ -75,7 +72,6 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) 
 	var isFabVisible by rememberSaveable { mutableStateOf(true) }
 	var showDeleteTunnelAlertDialog by remember { mutableStateOf(false) }
 	var selectedTunnel by remember { mutableStateOf<TunnelConf?>(null) }
-	val isRunningOnTv = remember { context.isRunningOnTv() }
 
 	val activeTunnels by viewModel.activeTunnels.collectAsStateWithLifecycle(emptyList())
 
@@ -91,11 +87,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) 
 	}
 	val autoTunnelToggleBattery = withIgnoreBatteryOpt(uiState.generalState.isBatteryOptimizationDisableShown) {
 		if (!uiState.generalState.isBatteryOptimizationDisableShown) viewModel.setBatteryOptimizeDisableShown()
-		if (uiState.appSettings.isKernelEnabled) {
-			viewModel.onToggleAutoTunnel()
-		} else {
-			startAutoTunnel.invoke(Unit)
-		}
+		startAutoTunnel.invoke(Unit)
 	}
 
 	val nestedScrollConnection = remember {
@@ -136,11 +128,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) 
 			viewModel.onTunnelStop(tunnel)
 			return
 		}
-		if (uiState.appSettings.isKernelEnabled) {
-			viewModel.onTunnelStart(tunnel)
-		} else {
-			startTunnel.invoke(tunnel)
-		}
+		startTunnel.invoke(tunnel)
 	}
 
 	Scaffold(
@@ -155,37 +143,16 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) 
 		},
 		floatingActionButtonPosition = FabPosition.End,
 		floatingActionButton = {
-			if (!isRunningOnTv) {
-				ScrollDismissFab({
-					val icon = Icons.Filled.Add
-					Icon(
-						imageVector = icon,
-						contentDescription = icon.name,
-						tint = MaterialTheme.colorScheme.onPrimary,
-					)
-				}, isVisible = isFabVisible, onClick = {
-					showBottomSheet = true
-				})
-			}
-		},
-		topBar = {
-			if (isRunningOnTv) {
-				TopNavBar(
-					showBack = false,
-					title = stringResource(R.string.app_name),
-					trailing = {
-						IconButton(onClick = {
-							showBottomSheet = true
-						}) {
-							val icon = Icons.Outlined.Add
-							Icon(
-								imageVector = icon,
-								contentDescription = icon.name,
-							)
-						}
-					},
+			ScrollDismissFab({
+				val icon = Icons.Filled.Add
+				Icon(
+					imageVector = icon,
+					contentDescription = icon.name,
+					tint = MaterialTheme.colorScheme.onPrimary,
 				)
-			}
+			}, isVisible = isFabVisible, onClick = {
+				showBottomSheet = true
+			})
 		},
 	) { padding ->
 		TunnelImportSheet(

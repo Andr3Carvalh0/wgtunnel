@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AirplanemodeActive
-import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Filter1
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Settings
@@ -58,13 +56,12 @@ import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.LearnM
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.LocationServicesDialog
 import com.zaneschepke.wireguardautotunnel.ui.theme.iconSize
 import com.zaneschepke.wireguardautotunnel.util.extensions.isLocationServicesEnabled
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.openWebUrl
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 import com.zaneschepke.wireguardautotunnel.viewmodel.AutoTunnelViewModel
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = hiltViewModel()) {
 	val context = LocalContext.current
@@ -80,29 +77,23 @@ fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = 
 		isBackgroundLocationGranted = fineLocationState.status.isGranted
 	}
 
-	fun isWifiNameReadable(): Boolean {
-		return when {
-			!isBackgroundLocationGranted ||
-				!fineLocationState.status.isGranted -> {
-				showLocationDialog = true
-				false
-			}
-			!context.isLocationServicesEnabled() -> {
-				showLocationServicesAlertDialog = true
-				false
-			}
-			else -> true
+	fun isWifiNameReadable(): Boolean = when {
+		!isBackgroundLocationGranted ||
+			!fineLocationState.status.isGranted -> {
+			showLocationDialog = true
+			false
 		}
+		!context.isLocationServicesEnabled() -> {
+			showLocationServicesAlertDialog = true
+			false
+		}
+		else -> true
 	}
 
 	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) checkFineLocationGranted()
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-		if (context.isRunningOnTv() && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-			checkFineLocationGranted()
-		} else {
-			val backgroundLocationState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-			isBackgroundLocationGranted = backgroundLocationState.status.isGranted
-		}
+		val backgroundLocationState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+		isBackgroundLocationGranted = backgroundLocationState.status.isGranted
 	}
 
 	LaunchedEffect(appSettings.trustedNetworkSSIDs) {
@@ -165,32 +156,6 @@ fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = 
 								},
 								onClick = {
 									viewModel.onToggleTunnelOnWifi()
-								},
-							),
-							SelectionItem(
-								Icons.Outlined.Code,
-								title = {
-									Text(
-										stringResource(R.string.wifi_name_via_shell),
-										style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
-									)
-								},
-								description = {
-									Text(
-										stringResource(R.string.use_root_shell_for_wifi),
-										style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.outline),
-									)
-								},
-								trailing = {
-									ScaledSwitch(
-										checked = appSettings.isWifiNameByShellEnabled,
-										onClick = {
-											viewModel.onRootShellWifiToggle()
-										},
-									)
-								},
-								onClick = {
-									viewModel.onRootShellWifiToggle()
 								},
 							),
 						),
@@ -261,7 +226,7 @@ fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = 
 											onDelete = { viewModel.onDeleteTrustedSSID(it) },
 											currentText = currentText,
 											onSave = { ssid ->
-												if (appSettings.isWifiNameByShellEnabled || isWifiNameReadable()) viewModel.onSaveTrustedSSID(ssid)
+												if (isWifiNameReadable()) viewModel.onSaveTrustedSSID(ssid)
 											},
 											onValueChange = { currentText = it },
 											supporting = {

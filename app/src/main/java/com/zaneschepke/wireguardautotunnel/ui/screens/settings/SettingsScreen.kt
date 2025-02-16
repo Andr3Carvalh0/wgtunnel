@@ -1,11 +1,8 @@
 package com.zaneschepke.wireguardautotunnel.ui.screens.settings
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -16,10 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ViewQuilt
 import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.FolderZip
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Pin
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.VpnKeyOff
 import androidx.compose.material.icons.outlined.VpnLock
@@ -33,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,28 +38,23 @@ import com.zaneschepke.wireguardautotunnel.ui.Route
 import com.zaneschepke.wireguardautotunnel.ui.common.button.ScaledSwitch
 import com.zaneschepke.wireguardautotunnel.ui.common.button.surface.SelectionItem
 import com.zaneschepke.wireguardautotunnel.ui.common.button.surface.SurfaceSelectionGroupButton
+import com.zaneschepke.wireguardautotunnel.ui.common.label.VersionLabel
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavController
 import com.zaneschepke.wireguardautotunnel.ui.common.prompt.AuthorizationPrompt
 import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.ForwardButton
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.launchNotificationSettings
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 import com.zaneschepke.wireguardautotunnel.util.extensions.showToast
 import com.zaneschepke.wireguardautotunnel.viewmodel.SettingsViewModel
-import xyz.teamgravity.pin_lock_compose.PinManager
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel: AppViewModel, uiState: AppUiState) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
-	val focusManager = LocalFocusManager.current
 	val snackbar = SnackbarController.current
-	val isRunningOnTv = remember { context.isRunningOnTv() }
 
-	val interactionSource = remember { MutableInteractionSource() }
 	var showAuthPrompt by remember { mutableStateOf(false) }
 
 	if (showAuthPrompt) {
@@ -99,18 +88,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel:
 			.padding(top = 24.dp.scaledHeight())
 			.padding(bottom = 40.dp.scaledHeight())
 			.padding(horizontal = 24.dp.scaledWidth())
-			.then(
-				if (!isRunningOnTv) {
-					Modifier.clickable(
-						indication = null,
-						interactionSource = interactionSource,
-					) {
-						focusManager.clearFocus()
-					}
-				} else {
-					Modifier
-				},
-			),
+			.then(Modifier),
 	) {
 		val onAutoTunnelClick = {
 			if (!uiState.generalState.isLocationDisclosureShown) {
@@ -159,34 +137,33 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel:
 						onClick = { appViewModel.onToggleShortcutsEnabled() },
 					),
 				)
-				if (!isRunningOnTv) {
-					add(
-						SelectionItem(
-							Icons.Outlined.VpnLock,
-							{
-								ScaledSwitch(
-									enabled = !(
-										(
-											uiState.appSettings.isTunnelOnWifiEnabled ||
-												uiState.appSettings.isTunnelOnEthernetEnabled ||
-												uiState.appSettings.isTunnelOnMobileDataEnabled
-											) &&
-											uiState.appSettings.isAutoTunnelEnabled
-										),
-									onClick = { appViewModel.onToggleAlwaysOnVPN() },
-									checked = uiState.appSettings.isAlwaysOnVpnEnabled,
-								)
-							},
-							title = {
-								Text(
-									stringResource(R.string.always_on_vpn_support),
-									style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
-								)
-							},
-							onClick = { appViewModel.onToggleAlwaysOnVPN() },
-						),
-					)
-				}
+				add(
+					SelectionItem(
+						Icons.Outlined.VpnLock,
+						{
+							ScaledSwitch(
+								enabled = !(
+									(
+										uiState.appSettings.isTunnelOnWifiEnabled ||
+											uiState.appSettings.isTunnelOnEthernetEnabled ||
+											uiState.appSettings.isTunnelOnMobileDataEnabled
+										) &&
+										uiState.appSettings.isAutoTunnelEnabled
+									),
+								onClick = { appViewModel.onToggleAlwaysOnVPN() },
+								checked = uiState.appSettings.isAlwaysOnVpnEnabled,
+							)
+						},
+						title = {
+							Text(
+								stringResource(R.string.always_on_vpn_support),
+								style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
+							)
+						},
+						onClick = { appViewModel.onToggleAlwaysOnVPN() },
+					),
+				)
+
 				add(
 					SelectionItem(
 						Icons.Outlined.VpnKeyOff,
@@ -248,88 +225,26 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel:
 						ForwardButton { context.launchNotificationSettings() }
 					},
 				),
+			),
+		)
+
+		SurfaceSelectionGroupButton(
+			listOf(
 				SelectionItem(
-					Icons.Outlined.Pin,
+					Icons.Outlined.FolderZip,
 					title = {
 						Text(
-							stringResource(R.string.enable_app_lock),
+							stringResource(R.string.export_configs),
 							style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
 						)
 					},
-					trailing = {
-						ScaledSwitch(
-							uiState.generalState.isPinLockEnabled,
-							onClick = {
-								if (uiState.generalState.isPinLockEnabled) {
-									appViewModel.onPinLockDisabled()
-								} else {
-									PinManager.initialize(context)
-									navController.navigate(Route.Lock)
-								}
-							},
-						)
-					},
 					onClick = {
-						if (uiState.generalState.isPinLockEnabled) {
-							appViewModel.onPinLockDisabled()
-						} else {
-							PinManager.initialize(context)
-							navController.navigate(Route.Lock)
-						}
+						if (uiState.tunnels.isEmpty()) return@SelectionItem context.showToast(R.string.tunnel_required)
+						showAuthPrompt = true
 					},
 				),
 			),
 		)
-
-		if (!isRunningOnTv) {
-			SurfaceSelectionGroupButton(
-				listOf(
-					SelectionItem(
-						Icons.Outlined.Code,
-						title = { Text(stringResource(R.string.kernel), style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface)) },
-						description = {
-							Text(
-								stringResource(R.string.use_kernel),
-								style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.outline),
-							)
-						},
-						trailing = {
-							ScaledSwitch(
-								uiState.appSettings.isKernelEnabled,
-								onClick = { appViewModel.onToggleKernelMode() },
-// 								enabled = !(
-// 									uiState.settings.isAutoTunnelEnabled ||
-// 										uiState.settings.isAlwaysOnVpnEnabled ||
-// 										(uiState.vpnState.status == TunnelState.UP)
-// 									),
-							)
-						},
-						onClick = {
-							appViewModel.onToggleKernelMode()
-						},
-					),
-				),
-			)
-		}
-
-		if (!isRunningOnTv) {
-			SurfaceSelectionGroupButton(
-				listOf(
-					SelectionItem(
-						Icons.Outlined.FolderZip,
-						title = {
-							Text(
-								stringResource(R.string.export_configs),
-								style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
-							)
-						},
-						onClick = {
-							if (uiState.tunnels.isEmpty()) return@SelectionItem context.showToast(R.string.tunnel_required)
-							showAuthPrompt = true
-						},
-					),
-				),
-			)
-		}
+		VersionLabel()
 	}
 }

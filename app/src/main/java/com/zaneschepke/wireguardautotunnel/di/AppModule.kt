@@ -1,8 +1,6 @@
 package com.zaneschepke.wireguardautotunnel.di
 
 import android.content.Context
-import com.zaneschepke.logcatter.LogReader
-import com.zaneschepke.logcatter.LogcatReader
 import com.zaneschepke.wireguardautotunnel.core.notification.NotificationManager
 import com.zaneschepke.wireguardautotunnel.core.notification.WireGuardNotification
 import com.zaneschepke.wireguardautotunnel.core.shortcut.DynamicShortcutManager
@@ -20,6 +18,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
+
 	@Singleton
 	@ApplicationScope
 	@Provides
@@ -28,19 +27,10 @@ class AppModule {
 
 	@Singleton
 	@Provides
-	fun provideLogCollect(@ApplicationContext context: Context): LogReader {
-		return LogcatReader.init(storageDir = context.filesDir.absolutePath)
-	}
+	fun provideNotificationService(@ApplicationContext context: Context): NotificationManager = WireGuardNotification(context)
 
 	@Singleton
 	@Provides
-	fun provideNotificationService(@ApplicationContext context: Context): NotificationManager {
-		return WireGuardNotification(context)
-	}
-
-	@Singleton
-	@Provides
-	fun provideShortcutManager(@ApplicationContext context: Context, @IoDispatcher ioDispatcher: CoroutineDispatcher): ShortcutManager {
-		return DynamicShortcutManager(context, ioDispatcher)
-	}
+	fun provideShortcutManager(@ApplicationContext context: Context, @IoDispatcher ioDispatcher: CoroutineDispatcher): ShortcutManager =
+		DynamicShortcutManager(context, ioDispatcher)
 }

@@ -31,30 +31,19 @@ class TunnelModule {
 	@Provides
 	@Singleton
 	@TunnelShell
-	fun provideTunnelRootShell(@ApplicationContext context: Context): RootShell {
-		return RootShell(context)
-	}
+	fun provideTunnelRootShell(@ApplicationContext context: Context): RootShell = RootShell(context)
 
 	@Provides
 	@Singleton
-	@AppShell
-	fun provideAppRootShell(@ApplicationContext context: Context): RootShell {
-		return RootShell(context)
-	}
+	fun provideAmneziaBackend(@ApplicationContext context: Context): Backend =
+		GoBackend(context, RootTunnelActionHandler(org.amnezia.awg.util.RootShell(context)))
 
 	@Provides
 	@Singleton
-	fun provideAmneziaBackend(@ApplicationContext context: Context): Backend {
-		return GoBackend(context, RootTunnelActionHandler(org.amnezia.awg.util.RootShell(context)))
-	}
-
-	@Provides
-	@Singleton
-	fun provideKernelBackend(@ApplicationContext context: Context, @TunnelShell shell: RootShell): com.wireguard.android.backend.Backend {
-		return WgQuickBackend(context, shell, ToolsInstaller(context, shell), com.wireguard.android.backend.RootTunnelActionHandler(shell)).also {
+	fun provideKernelBackend(@ApplicationContext context: Context, @TunnelShell shell: RootShell): com.wireguard.android.backend.Backend =
+		WgQuickBackend(context, shell, ToolsInstaller(context, shell), com.wireguard.android.backend.RootTunnelActionHandler(shell)).also {
 			it.setMultipleTunnels(true)
 		}
-	}
 
 	@Provides
 	@Singleton
@@ -67,9 +56,7 @@ class TunnelModule {
 		networkMonitor: NetworkMonitor,
 		notificationManager: NotificationManager,
 		backend: com.wireguard.android.backend.Backend,
-	): TunnelProvider {
-		return KernelTunnel(ioDispatcher, applicationScope, serviceManager, appDataRepository, notificationManager, backend, networkMonitor)
-	}
+	): TunnelProvider = KernelTunnel(ioDispatcher, applicationScope, serviceManager, appDataRepository, notificationManager, backend, networkMonitor)
 
 	@Provides
 	@Singleton
@@ -82,9 +69,7 @@ class TunnelModule {
 		notificationManager: NotificationManager,
 		networkMonitor: NetworkMonitor,
 		backend: Backend,
-	): TunnelProvider {
-		return UserspaceTunnel(ioDispatcher, applicationScope, serviceManager, appDataRepository, notificationManager, backend, networkMonitor)
-	}
+	): TunnelProvider = UserspaceTunnel(ioDispatcher, applicationScope, serviceManager, appDataRepository, notificationManager, backend, networkMonitor)
 
 	@Provides
 	@Singleton
@@ -94,9 +79,7 @@ class TunnelModule {
 		appDataRepository: AppDataRepository,
 		@IoDispatcher ioDispatcher: CoroutineDispatcher,
 		@ApplicationScope applicationScope: CoroutineScope,
-	): TunnelManager {
-		return TunnelManager(kernelTunnel, userspaceTunnel, appDataRepository, applicationScope, ioDispatcher)
-	}
+	): TunnelManager = TunnelManager(kernelTunnel, userspaceTunnel, appDataRepository, applicationScope, ioDispatcher)
 
 	@Singleton
 	@Provides
@@ -104,7 +87,5 @@ class TunnelModule {
 		@ApplicationContext context: Context,
 		@IoDispatcher ioDispatcher: CoroutineDispatcher,
 		appDataRepository: AppDataRepository,
-	): ServiceManager {
-		return ServiceManager(context, ioDispatcher, appDataRepository)
-	}
+	): ServiceManager = ServiceManager(context, ioDispatcher, appDataRepository)
 }

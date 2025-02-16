@@ -7,7 +7,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.wireguard.android.backend.GoBackend
-import com.zaneschepke.logcatter.LogReader
 import com.zaneschepke.wireguardautotunnel.core.tunnel.TunnelManager
 import com.zaneschepke.wireguardautotunnel.di.ApplicationScope
 import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
@@ -16,7 +15,6 @@ import com.zaneschepke.wireguardautotunnel.domain.enums.BackendState
 import com.zaneschepke.wireguardautotunnel.domain.repository.AppDataRepository
 import com.zaneschepke.wireguardautotunnel.util.LocaleUtil
 import com.zaneschepke.wireguardautotunnel.util.ReleaseTree
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -31,9 +29,6 @@ class WireGuardAutoTunnel : Application() {
 	@Inject
 	@ApplicationScope
 	lateinit var applicationScope: CoroutineScope
-
-	@Inject
-	lateinit var logReader: LogReader
 
 	@Inject
 	lateinit var appDataRepository: AppDataRepository
@@ -82,12 +77,6 @@ class WireGuardAutoTunnel : Application() {
 		}
 
 		applicationScope.launch {
-			withContext(mainDispatcher) {
-				if (appDataRepository.appState.isLocalLogsEnabled() && !isRunningOnTv()) logReader.initialize()
-			}
-			if (!appDataRepository.settings.get().isKernelEnabled) {
-				tunnelManager.setBackendState(BackendState.SERVICE_ACTIVE, emptyList())
-			}
 			appDataRepository.appState.getLocale()?.let {
 				withContext(mainDispatcher) {
 					LocaleUtil.changeLocale(it)
@@ -118,9 +107,7 @@ class WireGuardAutoTunnel : Application() {
 	companion object {
 		private var foreground = false
 
-		fun isForeground(): Boolean {
-			return foreground
-		}
+		fun isForeground(): Boolean = foreground
 
 		lateinit var instance: WireGuardAutoTunnel
 			private set

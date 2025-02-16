@@ -25,10 +25,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.button.surface.SelectionIte
 import com.zaneschepke.wireguardautotunnel.ui.common.button.surface.SurfaceSelectionGroupButton
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.TopNavBar
 import com.zaneschepke.wireguardautotunnel.ui.common.permission.vpn.withVpnPermission
-import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.ForwardButton
-import com.zaneschepke.wireguardautotunnel.util.StringValue
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.launchVpnSettings
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
@@ -42,7 +39,6 @@ fun KillSwitchScreen(uiState: AppUiState, appViewModel: AppViewModel) {
 	fun toggleVpnKillSwitch() {
 		with(uiState.appSettings) {
 			// TODO improve this error message
-			if (isKernelEnabled) return SnackbarController.showMessage(StringValue.StringResource(R.string.kernel_not_supported))
 			if (isVpnKillSwitchEnabled) {
 				appViewModel.onToggleVpnKillSwitch(false)
 			} else {
@@ -71,25 +67,23 @@ fun KillSwitchScreen(uiState: AppUiState, appViewModel: AppViewModel) {
 				.padding(top = 24.dp.scaledHeight())
 				.padding(horizontal = 24.dp.scaledWidth()),
 		) {
-			if (!context.isRunningOnTv()) {
-				SurfaceSelectionGroupButton(
-					listOf(
-						SelectionItem(
-							Icons.Outlined.AdminPanelSettings,
-							title = {
-								Text(
-									stringResource(R.string.native_kill_switch),
-									style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
-								)
-							},
-							onClick = { context.launchVpnSettings() },
-							trailing = {
-								ForwardButton { context.launchVpnSettings() }
-							},
-						),
+			SurfaceSelectionGroupButton(
+				listOf(
+					SelectionItem(
+						Icons.Outlined.AdminPanelSettings,
+						title = {
+							Text(
+								stringResource(R.string.native_kill_switch),
+								style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface),
+							)
+						},
+						onClick = { context.launchVpnSettings() },
+						trailing = {
+							ForwardButton { context.launchVpnSettings() }
+						},
 					),
-				)
-			}
+				),
+			)
 			SurfaceSelectionGroupButton(
 				buildList {
 					add(

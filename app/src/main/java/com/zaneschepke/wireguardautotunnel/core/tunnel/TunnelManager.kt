@@ -34,46 +34,38 @@ class TunnelManager @Inject constructor(
 		initialValue = null,
 	)
 
-	override suspend fun activeTunnels(): StateFlow<List<TunnelConf>> {
-		return withContext(ioDispatcher) {
-			appSettings.filterNotNull().first().let {
-				if (it.isKernelEnabled) return@withContext kernelTunnel.activeTunnels()
-				userspaceTunnel.activeTunnels()
-			}
+	override suspend fun activeTunnels(): StateFlow<List<TunnelConf>> = withContext(ioDispatcher) {
+		appSettings.filterNotNull().first().let {
+			userspaceTunnel.activeTunnels()
 		}
 	}
 
 	override suspend fun startTunnel(tunnelConf: TunnelConf) {
 		appSettings.withData {
-			if (it.isKernelEnabled) return@withData kernelTunnel.startTunnel(tunnelConf)
 			userspaceTunnel.startTunnel(tunnelConf)
 		}
 	}
 
 	override suspend fun stopTunnel(tunnelConf: TunnelConf?) {
 		appSettings.withData {
-			if (it.isKernelEnabled) return@withData kernelTunnel.stopTunnel(tunnelConf)
 			userspaceTunnel.stopTunnel(tunnelConf)
 		}
 	}
 
 	override suspend fun bounceTunnel(tunnelConf: TunnelConf) {
 		appSettings.withData {
-			if (it.isKernelEnabled) return@withData kernelTunnel.stopTunnel(tunnelConf)
 			userspaceTunnel.stopTunnel(tunnelConf)
 		}
 	}
 
 	override suspend fun setBackendState(backendState: BackendState, allowedIps: Collection<String>) {
 		appSettings.withData {
-			if (it.isKernelEnabled) return@withData kernelTunnel.setBackendState(backendState, allowedIps)
 			userspaceTunnel.setBackendState(backendState, allowedIps)
 		}
 	}
 
 	override suspend fun runningTunnelNames(): Set<String> {
 		appSettings.filterNotNull().first().let {
-			if (it.isKernelEnabled) return kernelTunnel.runningTunnelNames()
 			return userspaceTunnel.runningTunnelNames()
 		}
 	}
@@ -85,11 +77,6 @@ class TunnelManager @Inject constructor(
 					val previouslyActiveTuns = appDataRepository.tunnels.getActive()
 					// handle kernel mode
 					val tunsToStart = previouslyActiveTuns.filterNot { tun -> activeTunnels().value.any { tun.id == it.id } }
-					if (isKernelEnabled) {
-						return@withContext tunsToStart.forEach {
-							startTunnel(it)
-						}
-					}
 					// handle userspace
 					if (activeTunnels().value.isEmpty()) tunsToStart.firstOrNull()?.let { startTunnel(it) }
 				}
