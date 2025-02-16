@@ -25,7 +25,6 @@ import com.zaneschepke.wireguardautotunnel.util.Constants
 private const val BASELINE_HEIGHT = 2201
 private const val BASELINE_WIDTH = 1080
 private const val BASELINE_DENSITY = 2.625
-private const val ANDROID_TV_SIZE_MULTIPLIER = 1.5f
 
 fun Context.openWebUrl(url: String): Result<Unit> {
 	return kotlin.runCatching {
@@ -51,8 +50,7 @@ val Context.actionBarSize
 fun Context.resizeHeight(dp: Dp): Dp {
 	val displayMetrics = resources.displayMetrics
 	val density = displayMetrics.density
-	val height = (displayMetrics.heightPixels - this.actionBarSize) *
-		(if (isRunningOnTv()) ANDROID_TV_SIZE_MULTIPLIER else 1f)
+	val height = (displayMetrics.heightPixels - this.actionBarSize)
 	val resizeHeightPercentage =
 		(height.toFloat() / BASELINE_HEIGHT) * (BASELINE_DENSITY.toFloat() / density)
 	return dp * resizeHeightPercentage
@@ -61,8 +59,7 @@ fun Context.resizeHeight(dp: Dp): Dp {
 fun Context.resizeHeight(textUnit: TextUnit): TextUnit {
 	val displayMetrics = resources.displayMetrics
 	val density = displayMetrics.density
-	val height = (displayMetrics.heightPixels - actionBarSize) *
-		(if (isRunningOnTv()) ANDROID_TV_SIZE_MULTIPLIER else 1f)
+	val height = (displayMetrics.heightPixels - actionBarSize)
 	val resizeHeightPercentage =
 		(height.toFloat() / BASELINE_HEIGHT) * (BASELINE_DENSITY.toFloat() / density)
 	return textUnit * resizeHeightPercentage * 1.1
@@ -78,7 +75,6 @@ fun Context.resizeWidth(dp: Dp): Dp {
 }
 
 fun Context.launchNotificationSettings() {
-	if (isRunningOnTv()) return launchAppSettings()
 	val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
 		.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 		.putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
@@ -109,29 +105,6 @@ fun Context.showToast(resId: Int) {
 		this.getString(resId),
 		Toast.LENGTH_LONG,
 	).show()
-}
-
-fun Context.launchSupportEmail() {
-	val intent =
-		Intent(Intent.ACTION_SENDTO).apply {
-			data = Uri.parse("mailto:")
-			putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_email)))
-			putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
-			addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-		}
-	if (intent.resolveActivity(packageManager) != null) {
-		startActivity(
-			Intent.createChooser(intent, getString(R.string.email_chooser)).apply {
-				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			},
-		)
-	} else {
-		showToast(R.string.no_email_detected)
-	}
-}
-
-fun Context.isRunningOnTv(): Boolean {
-	return packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
 }
 
 fun Context.launchVpnSettings(): Result<Unit> {

@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,12 +56,11 @@ import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.LearnM
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.components.LocationServicesDialog
 import com.zaneschepke.wireguardautotunnel.ui.theme.iconSize
 import com.zaneschepke.wireguardautotunnel.util.extensions.isLocationServicesEnabled
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.openWebUrl
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AutoTunnelScreen(uiState: AppUiState, viewModel: AutoTunnelViewModel = hiltViewModel()) {
 	val context = LocalContext.current
@@ -78,29 +76,23 @@ fun AutoTunnelScreen(uiState: AppUiState, viewModel: AutoTunnelViewModel = hiltV
 		isBackgroundLocationGranted = fineLocationState.status.isGranted
 	}
 
-	fun isWifiNameReadable(): Boolean {
-		return when {
-			!isBackgroundLocationGranted ||
-				!fineLocationState.status.isGranted -> {
-				showLocationDialog = true
-				false
-			}
-			!context.isLocationServicesEnabled() -> {
-				showLocationServicesAlertDialog = true
-				false
-			}
-			else -> true
+	fun isWifiNameReadable(): Boolean = when {
+		!isBackgroundLocationGranted ||
+			!fineLocationState.status.isGranted -> {
+			showLocationDialog = true
+			false
 		}
+		!context.isLocationServicesEnabled() -> {
+			showLocationServicesAlertDialog = true
+			false
+		}
+		else -> true
 	}
 
 	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) checkFineLocationGranted()
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-		if (context.isRunningOnTv() && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
-			checkFineLocationGranted()
-		} else {
-			val backgroundLocationState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-			isBackgroundLocationGranted = backgroundLocationState.status.isGranted
-		}
+		val backgroundLocationState = rememberPermissionState(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+		isBackgroundLocationGranted = backgroundLocationState.status.isGranted
 	}
 
 	LaunchedEffect(uiState.settings.trustedNetworkSSIDs) {

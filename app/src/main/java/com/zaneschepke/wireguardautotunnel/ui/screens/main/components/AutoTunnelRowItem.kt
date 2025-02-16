@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zaneschepke.wireguardautotunnel.R
@@ -16,11 +15,9 @@ import com.zaneschepke.wireguardautotunnel.ui.AppUiState
 import com.zaneschepke.wireguardautotunnel.ui.common.ExpandingRowListItem
 import com.zaneschepke.wireguardautotunnel.ui.common.button.ScaledSwitch
 import com.zaneschepke.wireguardautotunnel.ui.theme.SilverTree
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 
 @Composable
 fun AutoTunnelRowItem(appUiState: AppUiState, onToggle: () -> Unit) {
-	val context = LocalContext.current
 	ExpandingRowListItem(
 		leading = {
 			val icon = Icons.Rounded.Bolt
@@ -47,11 +44,7 @@ fun AutoTunnelRowItem(appUiState: AppUiState, onToggle: () -> Unit) {
 				},
 			)
 		},
-		onClick = {
-			if (context.isRunningOnTv()) {
-				onToggle()
-			}
-		},
+		onClick = { },
 		isExpanded = false,
 	)
 }

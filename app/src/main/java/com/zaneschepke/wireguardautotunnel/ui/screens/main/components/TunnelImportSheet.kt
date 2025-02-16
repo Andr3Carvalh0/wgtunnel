@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zaneschepke.wireguardautotunnel.R
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 
 // TODO refactor this component
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,50 +63,49 @@ fun TunnelImportSheet(
 					modifier = Modifier.padding(10.dp),
 				)
 			}
-			if (!context.isRunningOnTv()) {
-				HorizontalDivider()
-				Row(
-					modifier =
-					Modifier
-						.fillMaxWidth()
-						.clickable {
-							onDismiss()
-							onQrClick()
-						}
-						.padding(10.dp),
-				) {
-					Icon(
-						Icons.Filled.QrCode,
-						contentDescription = stringResource(id = R.string.qr_scan),
-						modifier = Modifier.padding(10.dp),
-					)
-					Text(
-						stringResource(id = R.string.add_from_qr),
-						modifier = Modifier.padding(10.dp),
-					)
-				}
-				HorizontalDivider()
-				Row(
-					modifier =
-					Modifier
-						.fillMaxWidth()
-						.clickable {
-							onDismiss()
-							onClipboardClick()
-						}
-						.padding(10.dp),
-				) {
-					val icon = Icons.Filled.ContentPasteGo
-					Icon(
-						icon,
-						contentDescription = icon.name,
-						modifier = Modifier.padding(10.dp),
-					)
-					Text(
-						stringResource(id = R.string.add_from_clipboard),
-						modifier = Modifier.padding(10.dp),
-					)
-				}
+
+			HorizontalDivider()
+			Row(
+				modifier =
+				Modifier
+					.fillMaxWidth()
+					.clickable {
+						onDismiss()
+						onQrClick()
+					}
+					.padding(10.dp),
+			) {
+				Icon(
+					Icons.Filled.QrCode,
+					contentDescription = stringResource(id = R.string.qr_scan),
+					modifier = Modifier.padding(10.dp),
+				)
+				Text(
+					stringResource(id = R.string.add_from_qr),
+					modifier = Modifier.padding(10.dp),
+				)
+			}
+			HorizontalDivider()
+			Row(
+				modifier =
+				Modifier
+					.fillMaxWidth()
+					.clickable {
+						onDismiss()
+						onClipboardClick()
+					}
+					.padding(10.dp),
+			) {
+				val icon = Icons.Filled.ContentPasteGo
+				Icon(
+					icon,
+					contentDescription = icon.name,
+					modifier = Modifier.padding(10.dp),
+				)
+				Text(
+					stringResource(id = R.string.add_from_clipboard),
+					modifier = Modifier.padding(10.dp),
+				)
 			}
 			HorizontalDivider()
 			Row(

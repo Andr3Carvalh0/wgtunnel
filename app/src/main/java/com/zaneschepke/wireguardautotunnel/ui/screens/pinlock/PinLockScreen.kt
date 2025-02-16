@@ -11,7 +11,6 @@ import com.zaneschepke.wireguardautotunnel.ui.Route
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavController
 import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
 import com.zaneschepke.wireguardautotunnel.util.StringValue
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import xyz.teamgravity.pin_lock_compose.PinLock
 
 @Composable
@@ -36,14 +35,9 @@ fun PinLockScreen(appViewModel: AppViewModel) {
 		backgroundColor = MaterialTheme.colorScheme.surface,
 		textColor = MaterialTheme.colorScheme.onSurface,
 		onPinCorrect = {
-			// pin is correct, navigate or hide pin lock
-			if (context.isRunningOnTv()) {
+			val isPopped = navController.popBackStack()
+			if (!isPopped) {
 				navController.navigate(Route.Main)
-			} else {
-				val isPopped = navController.popBackStack()
-				if (!isPopped) {
-					navController.navigate(Route.Main)
-				}
 			}
 		},
 		onPinIncorrect = {

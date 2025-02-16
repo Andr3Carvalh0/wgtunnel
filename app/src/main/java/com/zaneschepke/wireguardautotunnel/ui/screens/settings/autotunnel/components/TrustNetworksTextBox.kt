@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.zaneschepke.wireguardautotunnel.R
 import com.zaneschepke.wireguardautotunnel.ui.common.ClickableIconButton
 import com.zaneschepke.wireguardautotunnel.ui.common.textbox.CustomTextField
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
@@ -51,14 +50,8 @@ fun TrustedNetworkTextBox(
 		) {
 			trustedNetworks.forEach { ssid ->
 				ClickableIconButton(
-					onClick = {
-						if (context.isRunningOnTv()) {
-							onDelete(ssid)
-						}
-					},
-					onIconClick = {
-						onDelete(ssid)
-					},
+					onClick = {},
+					onIconClick = { onDelete(ssid) },
 					text = ssid,
 					icon = Icons.Filled.Close,
 				)

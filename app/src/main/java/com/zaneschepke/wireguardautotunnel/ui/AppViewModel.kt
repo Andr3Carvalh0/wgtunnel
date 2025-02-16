@@ -1,12 +1,12 @@
 package com.zaneschepke.wireguardautotunnel.ui
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wireguard.android.backend.WgQuickBackend
 import com.wireguard.android.util.RootShell
 import com.wireguard.config.Config
-import com.zaneschepke.logcatter.LogReader
 import com.zaneschepke.wireguardautotunnel.R
 import com.zaneschepke.wireguardautotunnel.WireGuardAutoTunnel
 import com.zaneschepke.wireguardautotunnel.data.domain.Settings
@@ -57,7 +57,6 @@ constructor(
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 	@AppShell private val rootShell: Provider<RootShell>,
 	private val serviceManager: ServiceManager,
-	private val logReader: LogReader,
 ) : ViewModel() {
 
 	private val _popBackStack = MutableSharedFlow<Boolean>()
@@ -151,21 +150,6 @@ constructor(
 
 	fun setLocationDisclosureShown() = viewModelScope.launch {
 		appDataRepository.appState.setLocationDisclosureShown(true)
-	}
-
-	fun onToggleLocalLogging() = viewModelScope.launch(ioDispatcher) {
-		with(uiState.value.generalState) {
-			val toggledOn = !isLocalLogsEnabled
-			appDataRepository.appState.setLocalLogsEnabled(toggledOn)
-			if (!toggledOn) onLoggerStop()
-			_configurationChange.update {
-				true
-			}
-		}
-	}
-
-	private suspend fun onLoggerStop() {
-		logReader.deleteAndClearLogs()
 	}
 
 	fun onToggleAlwaysOnVPN() = viewModelScope.launch {
@@ -271,10 +255,8 @@ constructor(
 		}
 	}
 
-	private suspend fun isKernelSupported(): Boolean {
-		return withContext(ioDispatcher) {
-			WgQuickBackend.hasKernelSupport()
-		}
+	private suspend fun isKernelSupported(): Boolean = withContext(ioDispatcher) {
+		WgQuickBackend.hasKernelSupport()
 	}
 
 	suspend fun getEmitSplitTunnelApps(context: Context) {
@@ -290,14 +272,12 @@ constructor(
 		}
 	}
 
-	suspend fun requestRoot(): Result<Unit> {
-		return withContext(ioDispatcher) {
-			kotlin.runCatching {
-				rootShell.get().start()
-				SnackbarController.showMessage(StringValue.StringResource(R.string.root_accepted))
-			}.onFailure {
-				SnackbarController.showMessage(StringValue.StringResource(R.string.error_root_denied))
-			}
+	suspend fun requestRoot(): Result<Unit> = withContext(ioDispatcher) {
+		kotlin.runCatching {
+			rootShell.get().start()
+			SnackbarController.showMessage(StringValue.StringResource(R.string.root_accepted))
+		}.onFailure {
+			SnackbarController.showMessage(StringValue.StringResource(R.string.error_root_denied))
 		}
 	}
 
@@ -388,23 +368,21 @@ constructor(
 		wgConfig: Config,
 		peers: List<PeerProxy>? = null,
 		`interface`: InterfaceProxy? = null,
-	): Pair<Config, org.amnezia.awg.config.Config> {
-		return withContext(ioDispatcher) {
-			Pair(
-				Config.Builder().apply {
-					addPeers(peers?.map { it.toWgPeer() } ?: wgConfig.peers)
-					setInterface(`interface`?.toWgInterface() ?: wgConfig.`interface`)
-				}.build(),
-				org.amnezia.awg.config.Config.Builder().apply {
-					addPeers(peers?.map { it.toAmPeer() } ?: amConfig.peers)
-					setInterface(`interface`?.toAmInterface() ?: amConfig.`interface`)
-				}.build(),
-			)
-		}
+	): Pair<Config, org.amnezia.awg.config.Config> = withContext(ioDispatcher) {
+		Pair(
+			Config.Builder().apply {
+				addPeers(peers?.map { it.toWgPeer() } ?: wgConfig.peers)
+				setInterface(`interface`?.toWgInterface() ?: wgConfig.`interface`)
+			}.build(),
+			org.amnezia.awg.config.Config.Builder().apply {
+				addPeers(peers?.map { it.toAmPeer() } ?: amConfig.peers)
+				setInterface(`interface`?.toAmInterface() ?: amConfig.`interface`)
+			}.build(),
+		)
 	}
 
-	private suspend fun buildConfigs(peers: List<PeerProxy>, `interface`: InterfaceProxy): Pair<Config, org.amnezia.awg.config.Config> {
-		return withContext(ioDispatcher) {
+	private suspend fun buildConfigs(peers: List<PeerProxy>, `interface`: InterfaceProxy): Pair<Config, org.amnezia.awg.config.Config> =
+		withContext(ioDispatcher) {
 			Pair(
 				Config.Builder().apply {
 					addPeers(peers.map { it.toWgPeer() })
@@ -416,5 +394,4 @@ constructor(
 				}.build(),
 			)
 		}
-	}
 }

@@ -14,13 +14,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -60,8 +58,6 @@ import com.zaneschepke.wireguardautotunnel.ui.screens.settings.autotunnel.AutoTu
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.autotunnel.advanced.AdvancedScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.disclosure.LocationDisclosureScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.killswitch.KillSwitchScreen
-import com.zaneschepke.wireguardautotunnel.ui.screens.support.SupportScreen
-import com.zaneschepke.wireguardautotunnel.ui.screens.support.logs.LogsScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.tunneloptions.OptionsScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.tunneloptions.config.ConfigScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.tunneloptions.splittunnel.SplitTunnelScreen
@@ -86,7 +82,6 @@ class MainActivity : AppCompatActivity() {
 	@Inject
 	lateinit var shortcutManager: ShortcutManager
 
-	@OptIn(ExperimentalLayoutApi::class)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		enableEdgeToEdge(
 			statusBarStyle = SystemBarStyle.auto(TRANSPARENT, TRANSPARENT),
@@ -168,11 +163,6 @@ class MainActivity : AppCompatActivity() {
 											route = Route.Settings,
 											icon = Icons.Rounded.Settings,
 										),
-										BottomNavItem(
-											name = stringResource(R.string.support),
-											route = Route.Support,
-											icon = Icons.Rounded.QuestionMark,
-										),
 									),
 								)
 							},
@@ -212,14 +202,8 @@ class MainActivity : AppCompatActivity() {
 									composable<Route.Display> {
 										DisplayScreen(appUiState)
 									}
-									composable<Route.Support> {
-										SupportScreen(appUiState, viewModel)
-									}
 									composable<Route.AutoTunnelAdvanced> {
 										AdvancedScreen(appUiState, viewModel)
-									}
-									composable<Route.Logs> {
-										LogsScreen()
 									}
 									composable<Route.Config> {
 										val args = it.toRoute<Route.Config>()

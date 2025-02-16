@@ -6,7 +6,6 @@ import android.os.StrictMode.ThreadPolicy
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.zaneschepke.logcatter.LogReader
 import com.zaneschepke.wireguardautotunnel.data.repository.AppStateRepository
 import com.zaneschepke.wireguardautotunnel.data.repository.SettingsRepository
 import com.zaneschepke.wireguardautotunnel.module.ApplicationScope
@@ -16,7 +15,6 @@ import com.zaneschepke.wireguardautotunnel.service.tunnel.BackendState
 import com.zaneschepke.wireguardautotunnel.service.tunnel.TunnelService
 import com.zaneschepke.wireguardautotunnel.util.LocaleUtil
 import com.zaneschepke.wireguardautotunnel.util.ReleaseTree
-import com.zaneschepke.wireguardautotunnel.util.extensions.isRunningOnTv
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -31,9 +29,6 @@ class WireGuardAutoTunnel : Application() {
 	@Inject
 	@ApplicationScope
 	lateinit var applicationScope: CoroutineScope
-
-	@Inject
-	lateinit var logReader: LogReader
 
 	@Inject
 	lateinit var appStateRepository: AppStateRepository
@@ -71,9 +66,6 @@ class WireGuardAutoTunnel : Application() {
 		}
 
 		applicationScope.launch {
-			withContext(mainDispatcher) {
-				if (appStateRepository.isLocalLogsEnabled() && !isRunningOnTv()) logReader.initialize()
-			}
 			if (!settingsRepository.getSettings().isKernelEnabled) {
 				tunnelService.setBackendState(BackendState.SERVICE_ACTIVE, emptyList())
 			}
@@ -107,9 +99,7 @@ class WireGuardAutoTunnel : Application() {
 	companion object {
 		private var foreground = false
 
-		fun isForeground(): Boolean {
-			return foreground
-		}
+		fun isForeground(): Boolean = foreground
 
 		lateinit var instance: WireGuardAutoTunnel
 			private set

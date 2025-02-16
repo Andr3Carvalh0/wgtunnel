@@ -20,9 +20,7 @@ import javax.inject.Inject
 
 class WireGuardNotification
 @Inject
-constructor(
-	@ApplicationContext override val context: Context,
-) : NotificationService {
+constructor(@ApplicationContext override val context: Context) : NotificationService {
 
 	enum class NotificationChannels {
 		VPN,
@@ -60,7 +58,7 @@ constructor(
 			setOngoing(onGoing)
 			setPriority(NotificationCompat.PRIORITY_HIGH)
 			setShowWhen(showTimestamp)
-			setSmallIcon(R.drawable.ic_launcher)
+			setSmallIcon(R.drawable.vpn_on)
 		}.build()
 	}
 
@@ -74,7 +72,7 @@ constructor(
 			PendingIntent.FLAG_IMMUTABLE,
 		)
 		return NotificationCompat.Action.Builder(
-			R.drawable.ic_launcher,
+			R.drawable.vpn_on,
 			notificationAction.title(context).uppercase(),
 			pendingIntent,
 		).build()
@@ -93,50 +91,46 @@ constructor(
 		}
 	}
 
-	private fun NotificationChannels.asBuilder(): NotificationCompat.Builder {
-		return when (this) {
-			NotificationChannels.AUTO_TUNNEL -> {
-				NotificationCompat.Builder(
-					context,
-					context.getString(R.string.auto_tunnel_channel_id),
-				)
-			}
-			NotificationChannels.VPN -> {
-				NotificationCompat.Builder(
-					context,
-					context.getString(R.string.vpn_channel_id),
-				)
-			}
+	private fun NotificationChannels.asBuilder(): NotificationCompat.Builder = when (this) {
+		NotificationChannels.AUTO_TUNNEL -> {
+			NotificationCompat.Builder(
+				context,
+				context.getString(R.string.auto_tunnel_channel_id),
+			)
+		}
+		NotificationChannels.VPN -> {
+			NotificationCompat.Builder(
+				context,
+				context.getString(R.string.vpn_channel_id),
+			)
 		}
 	}
 
-	private fun NotificationChannels.asChannel(): NotificationChannel {
-		return when (this) {
-			NotificationChannels.VPN -> {
-				NotificationChannel(
-					context.getString(R.string.vpn_channel_id),
-					context.getString(R.string.vpn_channel_name),
-					NotificationManager.IMPORTANCE_HIGH,
-				).apply {
-					description = context.getString(R.string.vpn_channel_description)
-					enableLights(true)
-					lightColor = Color.WHITE
-					enableVibration(false)
-					vibrationPattern = longArrayOf(100, 200, 300)
-				}
+	private fun NotificationChannels.asChannel(): NotificationChannel = when (this) {
+		NotificationChannels.VPN -> {
+			NotificationChannel(
+				context.getString(R.string.vpn_channel_id),
+				context.getString(R.string.vpn_channel_name),
+				NotificationManager.IMPORTANCE_HIGH,
+			).apply {
+				description = context.getString(R.string.vpn_channel_description)
+				enableLights(true)
+				lightColor = Color.WHITE
+				enableVibration(false)
+				vibrationPattern = longArrayOf(100, 200, 300)
 			}
-			NotificationChannels.AUTO_TUNNEL -> {
-				NotificationChannel(
-					context.getString(R.string.auto_tunnel_channel_id),
-					context.getString(R.string.auto_tunnel_channel_name),
-					NotificationManager.IMPORTANCE_HIGH,
-				).apply {
-					description = context.getString(R.string.auto_tunnel_channel_description)
-					enableLights(true)
-					lightColor = Color.WHITE
-					enableVibration(false)
-					vibrationPattern = longArrayOf(100, 200, 300)
-				}
+		}
+		NotificationChannels.AUTO_TUNNEL -> {
+			NotificationChannel(
+				context.getString(R.string.auto_tunnel_channel_id),
+				context.getString(R.string.auto_tunnel_channel_name),
+				NotificationManager.IMPORTANCE_HIGH,
+			).apply {
+				description = context.getString(R.string.auto_tunnel_channel_description)
+				enableLights(true)
+				lightColor = Color.WHITE
+				enableVibration(false)
+				vibrationPattern = longArrayOf(100, 200, 300)
 			}
 		}
 	}

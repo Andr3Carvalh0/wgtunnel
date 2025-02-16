@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">WG Tunnel</string>
-    <string name="vpn_channel_id" translatable="false">VPN Channel</string>
+    <string name="app_name">PiVPN</string>
+    <string name="vpn_channel_id">VPN Channel</string>
     <string name="vpn_channel_name">VPN Notification Channel</string>
 	<string name="github_url" translatable="false">https://github.com/zaneschepke/wgtunnel/issues</string>
     <string name="docs_url" translatable="false">https://zaneschepke.com/wgtunnel-docs/overview.html</string>
@@ -17,7 +17,8 @@
     <string name="tunnel_on_ethernet">Tunnel on ethernet</string>
     <string name="prominent_background_location_message">This feature requires background location permission to enable Wi-Fi SSID monitoring even while the application is closed. For more details, please see the Privacy Policy linked on the Support screen.</string>
     <string name="prominent_background_location_title">Background Location Disclosure</string>
-    <string name="thank_you">Thank you for using WG Tunnel!</string>
+    <string name="thank_you">Thank you for using PiVPN!</string>
+    <string name="trusted_ssid_empty_description">Enter SSID</string>
     <string name="trusted_ssid_value_description">Submit SSID</string>
     <string name="add_tunnels_text">Add from file or zip</string>
     <string name="open_file">File Open</string>
@@ -66,7 +67,7 @@
     <string name="unknown_error">Unknown error occurred</string>
     <string name="tunnel_on_wifi">Tunnel on untrusted wifi</string>
     <string name="my_email" translatable="false">support@zaneschepke.com</string>
-    <string name="email_subject">WG Tunnel Support</string>
+    <string name="email_subject">PiVPN Support</string>
     <string name="email_chooser">Send an email…</string>
     <string name="docs_description">Read the docs</string>
 	<string name="email_description">Send me an email</string>
@@ -99,7 +100,6 @@
     <string name="edit_tunnel">Edit tunnel</string>
     <string name="version">Version</string>
     <string name="settings">Settings</string>
-    <string name="support">Support</string>
     <string name="kernel">Kernel</string>
     <string name="junk_packet_count">Junk packet count</string>
     <string name="junk_packet_minimum_size">Junk packet minimum size</string>

@@ -81,14 +81,15 @@ android {
 				getDefaultProguardFile("proguard-android-optimize.txt"),
 				"proguard-rules.pro",
 			)
+			applicationIdSuffix = ".pro"
 			signingConfig = signingConfigs.getByName(Constants.RELEASE)
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider\"")
 		}
 		debug {
 			applicationIdSuffix = ".debug"
 			versionNameSuffix = "-debug"
-			resValue("string", "app_name", "WG Tunnel - Debug")
 			isDebuggable = true
+			resValue("string", "app_name", "PiVPN - Debug")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.debug\"")
 		}
 
@@ -96,7 +97,7 @@ android {
 			initWith(buildTypes.getByName(Constants.RELEASE))
 			applicationIdSuffix = ".prerelease"
 			versionNameSuffix = "-pre"
-			resValue("string", "app_name", "WG Tunnel - Pre")
+			resValue("string", "app_name", "PiVPN - Pre")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.pre\"")
 		}
 
@@ -104,7 +105,7 @@ android {
 			initWith(buildTypes.getByName(Constants.RELEASE))
 			applicationIdSuffix = ".nightly"
 			versionNameSuffix = "-nightly"
-			resValue("string", "app_name", "WG Tunnel - Nightly")
+			resValue("string", "app_name", "PiVPN - Nightly")
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.nightly\"")
 		}
 
@@ -144,9 +145,6 @@ android {
 }
 
 dependencies {
-
-	implementation(project(":logcatter"))
-
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.lifecycle.runtime.ktx)
 

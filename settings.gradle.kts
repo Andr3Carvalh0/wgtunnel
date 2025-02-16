@@ -30,7 +30,6 @@ fun getLocalProperty(key: String, file: String = "local.properties"): String? {
 	return properties.getProperty(key)
 }
 
-rootProject.name = "WG Tunnel"
+rootProject.name = "PiVPN"
 
 include(":app")
-include(":logcatter")
