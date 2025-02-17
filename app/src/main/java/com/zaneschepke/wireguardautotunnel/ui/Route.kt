@@ -37,9 +37,6 @@ sealed class Route {
 	) : Route()
 
 	@Serializable
-	data object Lock : Route()
-
-	@Serializable
 	data object Scanner : Route()
 
 	@Serializable

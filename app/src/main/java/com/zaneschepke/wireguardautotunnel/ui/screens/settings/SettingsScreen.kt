@@ -81,8 +81,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel:
 	Column(
 		horizontalAlignment = Alignment.Start,
 		verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Top),
-		modifier =
-		Modifier
+		modifier = Modifier
 			.verticalScroll(rememberScrollState())
 			.fillMaxSize().systemBarsPadding().imePadding()
 			.padding(top = 24.dp.scaledHeight())

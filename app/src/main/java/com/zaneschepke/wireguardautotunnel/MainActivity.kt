@@ -140,8 +140,7 @@ class MainActivity : AppCompatActivity() {
 									CustomSnackBar(
 										snackbarData.visuals.message,
 										isRtl = false,
-										containerColor =
-										MaterialTheme.colorScheme.surfaceColorAtElevation(
+										containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
 											2.dp,
 										),
 									)
@@ -170,7 +169,7 @@ class MainActivity : AppCompatActivity() {
 									navController,
 									enterTransition = { fadeIn(tween(Constants.TRANSITION_ANIMATION_TIME)) },
 									exitTransition = { fadeOut(tween(Constants.TRANSITION_ANIMATION_TIME)) },
-									startDestination = (if (appUiState.generalState.isPinLockEnabled) Route.Lock else Route.Main),
+									startDestination = (Route.Main),
 								) {
 									composable<Route.Main> {
 										MainScreen(
