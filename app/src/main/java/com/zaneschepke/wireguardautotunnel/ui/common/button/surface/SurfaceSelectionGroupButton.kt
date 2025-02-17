@@ -27,6 +27,7 @@ fun SurfaceSelectionGroupButton(items: List<SelectionItem>) {
 	Card(
 		modifier = Modifier.fillMaxWidth(),
 		shape = RoundedCornerShape(8.dp),
+		elevation = CardDefaults.cardElevation(2.dp),
 		colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
 	) {
 		items.mapIndexed { index, item ->
