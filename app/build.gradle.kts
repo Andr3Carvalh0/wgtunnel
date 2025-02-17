@@ -170,8 +170,6 @@ dependencies {
 	debugImplementation(libs.androidx.compose.ui.tooling)
 	debugImplementation(libs.androidx.compose.manifest)
 
-	// get tunnel lib from github packages or mavenLocal
-// 	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
 	implementation(libs.tunnel)
 	implementation(libs.amneziawg.android)
 	coreLibraryDesugaring(libs.desugar.jdk.libs)
@@ -212,7 +210,6 @@ dependencies {
 
 	// bio
 	implementation(libs.androidx.biometric.ktx)
-	implementation(libs.pin.lock.compose)
 
 	// shortcuts
 	implementation(libs.androidx.core)
@@ -221,14 +218,12 @@ dependencies {
 	implementation(libs.androidx.core.splashscreen)
 }
 
-fun determineVersionName(): String {
-	return with(getBuildTaskName().lowercase()) {
-		when {
-			contains(Constants.NIGHTLY) || contains(Constants.PRERELEASE) ->
-				Constants.VERSION_NAME +
-					"-${grgitService.service.get().grgit.head().abbreviatedId}"
-			else -> Constants.VERSION_NAME
-		}
+fun determineVersionName(): String = with(getBuildTaskName().lowercase()) {
+	when {
+		contains(Constants.NIGHTLY) || contains(Constants.PRERELEASE) ->
+			Constants.VERSION_NAME +
+				"-${grgitService.service.get().grgit.head().abbreviatedId}"
+		else -> Constants.VERSION_NAME
 	}
 }
 
