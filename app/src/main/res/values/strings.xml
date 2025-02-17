@@ -101,7 +101,6 @@
     <string name="edit_tunnel">Edit tunnel</string>
     <string name="version">Version</string>
     <string name="settings">Settings</string>
-    <string name="kernel">Kernel</string>
     <string name="junk_packet_count">Junk packet count</string>
     <string name="junk_packet_minimum_size">Junk packet minimum size</string>
     <string name="junk_packet_maximum_size">Junk packet maximum size</string>

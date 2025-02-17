@@ -132,8 +132,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) 
 	}
 
 	Scaffold(
-		modifier =
-		Modifier.pointerInput(Unit) {
+		modifier = Modifier.pointerInput(Unit) {
 			if (uiState.tunnels.isEmpty()) return@pointerInput
 			detectTapGestures(
 				onTap = {
