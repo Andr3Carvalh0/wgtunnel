@@ -2,22 +2,15 @@
     <string name="app_name">PiVPN</string>
     <string name="vpn_channel_id">VPN Channel</string>
     <string name="vpn_channel_name">VPN Notification Channel</string>
-	<string name="github_url" translatable="false">https://github.com/zaneschepke/wgtunnel/issues</string>
-    <string name="docs_url" translatable="false">https://zaneschepke.com/wgtunnel-docs/overview.html</string>
-    <string name="privacy_policy_url" translatable="false">https://zaneschepke.com/wgtunnel-docs/privacypolicy.html</string>
 	<string name="docs_wildcards" translatable="false" >https://zaneschepke.com/wgtunnel-docs/features.html#wildcard-wi-fi-name-support</string>
-	<string name="donate_url" translatable="false">https://zaneschepke.com/donate/</string>
 	<string name="error_file_extension">File is not a .conf or .zip</string>
-    <string name="turn_off_tunnel">Action requires tunnel off</string>
     <string name="no_tunnels">No tunnels added yet!</string>
     <string name="tunnels">Tunnels</string>
     <string name="tunnel_mobile_data">Tunnel on mobile data</string>
-	<string name="privacy_policy">View privacy policy</string>
     <string name="okay">Okay</string>
     <string name="tunnel_on_ethernet">Tunnel on ethernet</string>
     <string name="prominent_background_location_message">This feature requires background location permission to enable Wi-Fi SSID monitoring even while the application is closed. For more details, please see the Privacy Policy linked on the Support screen.</string>
     <string name="prominent_background_location_title">Background Location Disclosure</string>
-    <string name="thank_you">Thank you for using PiVPN!</string>
     <string name="trusted_ssid_empty_description">Enter SSID</string>
     <string name="trusted_ssid_value_description">Submit SSID</string>
     <string name="add_tunnels_text">Add from file or zip</string>
@@ -36,7 +29,7 @@
     <string name="allowed_ips">Allowed IPs</string>
     <string name="endpoint">Endpoint</string>
     <string name="name">Name</string>
-    <string name="always_on_vpn_support">Allow Always-On VPN </string>
+    <string name="always_on_vpn_support">Allow Always-On VPN</string>
     <string name="location_services_not_detected">Location Services Not Detected</string>
     <string name="hint_search_packages">Search packages</string>
     <string name="db_name" translatable="false">wg-tunnel-db</string>
@@ -66,15 +59,8 @@
     <string name="export_configs">Export configs</string>
     <string name="unknown_error">Unknown error occurred</string>
     <string name="tunnel_on_wifi">Tunnel on untrusted wifi</string>
-    <string name="my_email" translatable="false">support@zaneschepke.com</string>
-    <string name="email_subject">PiVPN Support</string>
-    <string name="email_chooser">Send an email…</string>
-    <string name="docs_description">Read the docs</string>
-	<string name="email_description">Send me an email</string>
-    <string name="use_kernel">Use kernel module</string>
     <string name="error_ssid_exists">SSID already exists</string>
-    <string name="error_root_denied">Root shell denied</string>
-    <string name="error_no_file_explorer">No file explorer installed</string>
+	<string name="error_no_file_explorer">No file explorer installed</string>
     <string name="error_invalid_code">Invalid QR code</string>
     <string name="location_services_missing_message">The app is not detecting any location services enabled on your device. Depending on the device, this could cause the untrusted wifi feature to fail to read the wifi name. Would you like to continue anyways?</string>
     <string name="auto_tunnel_title">Auto-tunnel service</string>
@@ -84,16 +70,8 @@
     <string name="tunneling_apps">Tunneling apps</string>
 	<string name="exclude_system_apps">Exclude System apps</string>
 	<string name="all">all</string>
-    <string name="no_email_detected">No email app detected</string>
     <string name="no_browser_detected">No browser detected</string>
-    <string name="open_issue">Open an issue</string>
-    <string name="read_logs">Read the logs</string>
     <string name="auto">(auto)</string>
-    <string name="incorrect_pin">Pin is incorrect</string>
-    <string name="pin_created">Pin successfully created</string>
-    <string name="enter_pin">Enter your pin</string>
-    <string name="create_pin">Create pin</string>
-    <string name="enable_app_lock">Enable app lock</string>
     <string name="restart_on_ping">Restart on ping fail (beta)</string>
     <string name="mobile_data_tunnel">Set as mobile data tunnel</string>
     <string name="set_primary_tunnel">Set as primary tunnel</string>
@@ -110,7 +88,6 @@
     <string name="response_packet_magic_header">Response packet magic header</string>
     <string name="transport_packet_magic_header">Transport packet magic header</string>
     <string name="underload_packet_magic_header">Underload packet magic header</string>
-    <string name="telegram_url" translatable="false">https://t.me/wgtunnel</string>
     <string name="unsure_how">if you are unsure how to proceed</string>
     <string name="see_the">See the</string>
     <string name="getting_started_url" translatable="false">https://zaneschepke.com/wgtunnel-docs/getting-started.html</string>
@@ -126,7 +103,6 @@
     <string name="background_location_message">Allow all the time location permission and/or precise location is required for this feature. Please see</string>
 	<string name="app_settings">app settings</string>
 	<string name="background_location_message2">to make sure these permissions are enabled</string>
-	<string name="root_accepted">Root shell accepted</string>
 	<string name="set_custom_ping_ip">Set custom ping ip</string>
 	<string name="default_ping_ip">(optional, defaults to peers)</string>
 	<string name="set_custom_ping_internal">Ping interval (sec)</string>
@@ -136,7 +112,6 @@
 	<string name="never">never</string>
 	<string name="sec">sec</string>
 	<string name="handshake">handshake</string>
-    <string name="logs">Logs</string>
     <string name="kill_switch">Kill switch</string>
 	<string name="appearance">Appearance</string>
 	<string name="notifications">Notifications</string>
@@ -154,18 +129,10 @@
 	<string name="use_wildcards">Use name wildcards</string>
 	<string name="learn_more">Learn more</string>
 	<string name="wildcards_active">Wildcards active</string>
-    <string name="wifi_name_via_shell">Wifi name via shell</string>
-	<string name="use_root_shell_for_wifi">Use root shell to get wifi name</string>
-	<string name="kernel_not_supported">Kernel not supported</string>
 	<string name="start_auto">Start auto-tunnel</string>
 	<string name="stop_auto">Stop auto-tunnel</string>
     <string name="tunnel_running">Tunnel running</string>
 	<string name="monitoring_state_changes">Monitoring state changes</string>
-	<string name="donate">Donate to project</string>
-	<string name="local_logging">Local logging</string>
-	<string name="enable_local_logging">Enable local logging</string>
-	<string name="configuration_change">Configuration change</string>
-	<string name="requires_app_relaunch">This change requires an app relaunch. Would you like to proceed?</string>
 	<string name="add_from_clipboard">Add from clipboard</string>
 	<string name="stop_on_no_internet">Stop on no internet</string>
 	<string name="stop_on_internet_loss">Stop tunnel on internet loss</string>
