@@ -18,13 +18,12 @@ import com.zaneschepke.wireguardautotunnel.ui.common.navigation.TopNavBar
 import com.zaneschepke.wireguardautotunnel.ui.theme.Theme
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
-import com.zaneschepke.wireguardautotunnel.viewmodel.DisplayViewModel
 
 @Composable
 fun DisplayScreen(appUiState: AppUiState, viewModel: DisplayViewModel = hiltViewModel()) {
 	Scaffold(
 		topBar = {
-			TopNavBar(stringResource(R.string.display_theme))
+			TopNavBar(stringResource(R.string.appearance))
 		},
 	) {
 		Column(

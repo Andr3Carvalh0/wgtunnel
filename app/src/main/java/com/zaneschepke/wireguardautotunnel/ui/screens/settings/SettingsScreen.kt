@@ -207,12 +207,8 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(), appViewModel:
 				SelectionItem(
 					Icons.AutoMirrored.Outlined.ViewQuilt,
 					title = { Text(stringResource(R.string.appearance), style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onSurface)) },
-					onClick = {
-						navController.navigate(Route.Appearance)
-					},
-					trailing = {
-						ForwardButton { navController.navigate(Route.Appearance) }
-					},
+					onClick = { navController.navigate(Route.Display) },
+					trailing = { ForwardButton { navController.navigate(Route.Display) } },
 				),
 				SelectionItem(
 					Icons.Outlined.Notifications,

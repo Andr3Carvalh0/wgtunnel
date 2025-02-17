@@ -17,16 +17,10 @@ sealed class Route {
 	data object LocationDisclosure : Route()
 
 	@Serializable
-	data object Appearance : Route()
-
-	@Serializable
 	data object Display : Route()
 
 	@Serializable
 	data object KillSwitch : Route()
-
-	@Serializable
-	data object Language : Route()
 
 	@Serializable
 	data object Main : Route()

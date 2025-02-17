@@ -145,8 +145,6 @@
 	<string name="light">Light</string>
 	<string name="dark">Dark</string>
 	<string name="dynamic">Dynamic</string>
-	<string name="language">Language</string>
-	<string name="display_theme">Display theme</string>
 	<string name="trusted_wifi_names">Trusted wifi names</string>
 	<string name="add_wifi_name">Add wifi name</string>
 	<string name="on_demand_rules">On demand tunnel rules</string>

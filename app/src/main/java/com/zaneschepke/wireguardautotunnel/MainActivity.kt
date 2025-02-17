@@ -53,10 +53,8 @@ import com.zaneschepke.wireguardautotunnel.ui.screens.main.ScannerScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.main.SplitTunnelScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.main.TunnelAutoTunnelScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.AdvancedScreen
-import com.zaneschepke.wireguardautotunnel.ui.screens.settings.AppearanceScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.DisplayScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.KillSwitchScreen
-import com.zaneschepke.wireguardautotunnel.ui.screens.settings.LanguageScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.LocationDisclosureScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.SettingsScreen
 import com.zaneschepke.wireguardautotunnel.ui.screens.settings.autotunnel.AutoTunnelScreen
@@ -189,12 +187,6 @@ class MainActivity : AppCompatActivity() {
 										AutoTunnelScreen(
 											appUiState.appSettings,
 										)
-									}
-									composable<Route.Appearance> {
-										AppearanceScreen()
-									}
-									composable<Route.Language> {
-										LanguageScreen(appUiState, viewModel)
 									}
 									composable<Route.Display> {
 										DisplayScreen(appUiState)

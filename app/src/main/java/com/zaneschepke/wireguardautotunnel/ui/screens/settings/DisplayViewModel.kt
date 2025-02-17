@@ -1,4 +1,4 @@
-package com.zaneschepke.wireguardautotunnel.viewmodel
+package com.zaneschepke.wireguardautotunnel.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,9 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DisplayViewModel
 @Inject
-constructor(
-	private val appStateRepository: AppStateRepository,
-) : ViewModel() {
+constructor(private val appStateRepository: AppStateRepository) : ViewModel() {
 
 	fun onThemeChange(theme: Theme) = viewModelScope.launch {
 		appStateRepository.setTheme(theme)
