@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults.Container
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -84,10 +85,10 @@ fun CustomTextField(
 			interactionSource = interactionSource,
 			placeholder = placeholder,
 			container = {
-				OutlinedTextFieldDefaults.ContainerBox(
-					enabled,
+				Container(
+					enabled = enabled,
 					isError = isError,
-					interactionSource,
+					interactionSource = interactionSource,
 					colors = TextFieldDefaults.colors().copy(
 						errorContainerColor = containerColor,
 						disabledLabelColor = MaterialTheme.colorScheme.onSurface,
