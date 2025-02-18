@@ -8,8 +8,6 @@ import com.zaneschepke.wireguardautotunnel.ui.Route
 import kotlin.reflect.KClass
 
 @SuppressLint("RestrictedApi")
-fun <T : Route> NavBackStackEntry?.isCurrentRoute(cls: KClass<T>): Boolean {
-	return this?.destination?.hierarchy?.any {
-		it.hasRoute(route = cls)
-	} == true
-}
+internal fun <T : Route> NavBackStackEntry?.isCurrentRoute(cls: KClass<T>): Boolean = this?.destination?.hierarchy?.any {
+	it.hasRoute(route = cls)
+} == true

@@ -22,7 +22,7 @@ import org.amnezia.awg.backend.Tunnel
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserspaceTunnel @Inject constructor(
+internal class UserspaceTunnel @Inject constructor(
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 	@ApplicationScope private val applicationScope: CoroutineScope,
 	serviceManager: ServiceManager,
@@ -30,7 +30,8 @@ class UserspaceTunnel @Inject constructor(
 	notificationManager: NotificationManager,
 	private val backend: Backend,
 	networkMonitor: NetworkMonitor,
-) : TunnelProvider, BaseTunnel(ioDispatcher, applicationScope, networkMonitor, appDataRepository, serviceManager, notificationManager) {
+) : BaseTunnel(ioDispatcher, applicationScope, networkMonitor, appDataRepository, serviceManager, notificationManager),
+	TunnelProvider {
 
 	override suspend fun startTunnel(tunnelConf: TunnelConf) {
 		withContext(ioDispatcher) {
@@ -49,9 +50,7 @@ class UserspaceTunnel @Inject constructor(
 		}
 	}
 
-	override suspend fun getStatistics(tunnelConf: TunnelConf): TunnelStatistics {
-		return AmneziaStatistics(backend.getStatistics(tunnelConf))
-	}
+	override suspend fun getStatistics(tunnelConf: TunnelConf): TunnelStatistics = AmneziaStatistics(backend.getStatistics(tunnelConf))
 
 	override suspend fun toggleTunnel(tunnelConf: TunnelConf, status: TunnelStatus) {
 		when (status) {
@@ -77,7 +76,5 @@ class UserspaceTunnel @Inject constructor(
 		backend.setBackendState(backendState.asAmBackendState(), allowedIps)
 	}
 
-	override suspend fun runningTunnelNames(): Set<String> {
-		return backend.runningTunnelNames
-	}
+	override suspend fun runningTunnelNames(): Set<String> = backend.runningTunnelNames
 }

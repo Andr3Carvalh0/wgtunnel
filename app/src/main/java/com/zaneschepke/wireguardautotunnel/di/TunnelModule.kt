@@ -7,7 +7,6 @@ import com.wireguard.android.util.ToolsInstaller
 import com.zaneschepke.wireguardautotunnel.core.network.NetworkMonitor
 import com.zaneschepke.wireguardautotunnel.core.notification.NotificationManager
 import com.zaneschepke.wireguardautotunnel.core.service.ServiceManager
-import com.zaneschepke.wireguardautotunnel.core.tunnel.KernelTunnel
 import com.zaneschepke.wireguardautotunnel.core.tunnel.TunnelManager
 import com.zaneschepke.wireguardautotunnel.core.tunnel.TunnelProvider
 import com.zaneschepke.wireguardautotunnel.core.tunnel.UserspaceTunnel
@@ -26,7 +25,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class TunnelModule {
+internal class TunnelModule {
 
 	@Provides
 	@Singleton
@@ -47,19 +46,6 @@ class TunnelModule {
 
 	@Provides
 	@Singleton
-	@Kernel
-	fun provideKernelProvider(
-		@IoDispatcher ioDispatcher: CoroutineDispatcher,
-		@ApplicationScope applicationScope: CoroutineScope,
-		serviceManager: ServiceManager,
-		appDataRepository: AppDataRepository,
-		networkMonitor: NetworkMonitor,
-		notificationManager: NotificationManager,
-		backend: com.wireguard.android.backend.Backend,
-	): TunnelProvider = KernelTunnel(ioDispatcher, applicationScope, serviceManager, appDataRepository, notificationManager, backend, networkMonitor)
-
-	@Provides
-	@Singleton
 	@Userspace
 	fun provideUserspaceProvider(
 		@IoDispatcher ioDispatcher: CoroutineDispatcher,
@@ -74,12 +60,11 @@ class TunnelModule {
 	@Provides
 	@Singleton
 	fun provideTunnelManager(
-		@Kernel kernelTunnel: TunnelProvider,
 		@Userspace userspaceTunnel: TunnelProvider,
 		appDataRepository: AppDataRepository,
 		@IoDispatcher ioDispatcher: CoroutineDispatcher,
 		@ApplicationScope applicationScope: CoroutineScope,
-	): TunnelManager = TunnelManager(kernelTunnel, userspaceTunnel, appDataRepository, applicationScope, ioDispatcher)
+	): TunnelManager = TunnelManager(userspaceTunnel, appDataRepository, applicationScope, ioDispatcher)
 
 	@Singleton
 	@Provides

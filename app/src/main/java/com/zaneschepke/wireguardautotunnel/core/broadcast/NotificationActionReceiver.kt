@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NotificationActionReceiver : BroadcastReceiver() {
+internal class NotificationActionReceiver : BroadcastReceiver() {
 
 	@Inject
 	lateinit var serviceManager: ServiceManager

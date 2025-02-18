@@ -35,9 +35,7 @@ import java.util.zip.ZipInputStream
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel
-@Inject
-constructor(
+internal class MainViewModel @Inject constructor(
 	val tunnelManager: TunnelManager,
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 	private val serviceManager: ServiceManager,
@@ -91,31 +89,27 @@ constructor(
 		}
 	}
 
-	private fun generateQrCodeDefaultName(config: String): String {
-		return try {
-			TunnelConf.configFromAmQuick(config).peers[0].endpoint.get().host
-		} catch (e: Exception) {
-			Timber.Forest.e(e)
-			NumberUtils.generateRandomTunnelName()
-		}
+	private fun generateQrCodeDefaultName(config: String): String = try {
+		TunnelConf.configFromAmQuick(config).peers[0].endpoint.get().host
+	} catch (e: Exception) {
+		Timber.Forest.e(e)
+		NumberUtils.generateRandomTunnelName()
 	}
 
-	private suspend fun makeTunnelNameUnique(name: String): String {
-		return withContext(ioDispatcher) {
-			val tunnels = appDataRepository.tunnels.getAll()
-			var tunnelName = name
-			var num = 1
-			while (tunnels.any { it.tunName == tunnelName }) {
-				tunnelName = if (!tunnelName.hasNumberInParentheses()) {
-					"$name($num)"
-				} else {
-					val pair = tunnelName.extractNameAndNumber()
-					"${pair?.first}($num)"
-				}
-				num++
+	private suspend fun makeTunnelNameUnique(name: String): String = withContext(ioDispatcher) {
+		val tunnels = appDataRepository.tunnels.getAll()
+		var tunnelName = name
+		var num = 1
+		while (tunnels.any { it.tunName == tunnelName }) {
+			tunnelName = if (!tunnelName.hasNumberInParentheses()) {
+				"$name($num)"
+			} else {
+				val pair = tunnelName.extractNameAndNumber()
+				"${pair?.first}($num)"
 			}
-			tunnelName
+			num++
 		}
+		tunnelName
 	}
 
 	private suspend fun saveTunnelConfigFromStream(stream: InputStream, fileName: String) {
@@ -130,9 +124,7 @@ constructor(
 		)
 	}
 
-	private fun getInputStreamFromUri(uri: Uri, context: Context): InputStream? {
-		return context.applicationContext.contentResolver.openInputStream(uri)
-	}
+	private fun getInputStreamFromUri(uri: Uri, context: Context): InputStream? = context.applicationContext.contentResolver.openInputStream(uri)
 
 	fun onTunnelFileSelected(uri: Uri, context: Context) = viewModelScope.launch(ioDispatcher) {
 		runCatching {
@@ -192,10 +184,8 @@ constructor(
 		saveTunnelConfigFromStream(stream, name)
 	}
 
-	private fun getFileNameByCursor(context: Context, uri: Uri): String? {
-		return context.contentResolver.query(uri, null, null, null, null)?.use {
-			getDisplayNameByCursor(it)
-		}
+	private fun getFileNameByCursor(context: Context, uri: Uri): String? = context.contentResolver.query(uri, null, null, null, null)?.use {
+		getDisplayNameByCursor(it)
 	}
 
 	private fun getDisplayNameColumnIndex(cursor: Cursor): Int? {
@@ -212,25 +202,17 @@ constructor(
 		return cursor.getString(index)
 	}
 
-	private fun isValidUriContentScheme(uri: Uri): Boolean {
-		return uri.scheme == Constants.URI_CONTENT_SCHEME
-	}
+	private fun isValidUriContentScheme(uri: Uri): Boolean = uri.scheme == Constants.URI_CONTENT_SCHEME
 
-	private fun getFileName(context: Context, uri: Uri): String {
-		return getFileNameByCursor(context, uri) ?: NumberUtils.generateRandomTunnelName()
-	}
+	private fun getFileName(context: Context, uri: Uri): String = getFileNameByCursor(context, uri) ?: NumberUtils.generateRandomTunnelName()
 
-	private fun getNameFromFileName(fileName: String): String {
-		return fileName.substring(0, fileName.lastIndexOf('.'))
-	}
+	private fun getNameFromFileName(fileName: String): String = fileName.substring(0, fileName.lastIndexOf('.'))
 
-	private fun getFileExtensionFromFileName(fileName: String): String? {
-		return try {
-			fileName.substring(fileName.lastIndexOf('.'))
-		} catch (e: Exception) {
-			Timber.Forest.e(e)
-			null
-		}
+	private fun getFileExtensionFromFileName(fileName: String): String? = try {
+		fileName.substring(fileName.lastIndexOf('.'))
+	} catch (e: Exception) {
+		Timber.Forest.e(e)
+		null
 	}
 
 	fun onCopyTunnel(tunnel: TunnelConf) = viewModelScope.launch {

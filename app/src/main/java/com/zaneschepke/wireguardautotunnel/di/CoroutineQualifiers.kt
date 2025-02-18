@@ -21,7 +21,3 @@ annotation class MainImmediateDispatcher
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class ApplicationScope
-
-@Retention(AnnotationRetention.RUNTIME)
-@Qualifier
-annotation class ServiceScope

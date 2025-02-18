@@ -20,7 +20,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun DisplayScreen(appUiState: AppUiState, viewModel: DisplayViewModel = hiltViewModel()) {
+internal fun DisplayScreen(appUiState: AppUiState, viewModel: DisplayViewModel = hiltViewModel()) {
 	Scaffold(
 		topBar = {
 			TopNavBar(stringResource(R.string.appearance))

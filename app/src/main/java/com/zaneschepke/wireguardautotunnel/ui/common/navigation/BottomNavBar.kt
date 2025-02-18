@@ -17,7 +17,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun BottomNavBar(navController: NavController, bottomNavItems: List<BottomNavItem>) {
+internal fun BottomNavBar(navController: NavController, bottomNavItems: List<BottomNavItem>) {
 	var showBottomBar by rememberSaveable { mutableStateOf(true) }
 	val navBackStackEntry by navController.currentBackStackEntryAsState()
 

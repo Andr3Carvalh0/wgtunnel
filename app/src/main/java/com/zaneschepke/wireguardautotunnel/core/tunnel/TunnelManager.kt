@@ -2,7 +2,6 @@ package com.zaneschepke.wireguardautotunnel.core.tunnel
 
 import com.zaneschepke.wireguardautotunnel.di.ApplicationScope
 import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
-import com.zaneschepke.wireguardautotunnel.di.Kernel
 import com.zaneschepke.wireguardautotunnel.di.Userspace
 import com.zaneschepke.wireguardautotunnel.domain.entity.AppSettings
 import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
@@ -20,8 +19,7 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class TunnelManager @Inject constructor(
-	@Kernel private val kernelTunnel: TunnelProvider,
+internal class TunnelManager @Inject constructor(
 	@Userspace private val userspaceTunnel: TunnelProvider,
 	private val appDataRepository: AppDataRepository,
 	@ApplicationScope private val applicationScope: CoroutineScope,

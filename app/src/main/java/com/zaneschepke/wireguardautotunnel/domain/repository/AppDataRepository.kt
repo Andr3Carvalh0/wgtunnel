@@ -2,7 +2,7 @@ package com.zaneschepke.wireguardautotunnel.domain.repository
 
 import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 
-interface AppDataRepository {
+internal interface AppDataRepository {
 	suspend fun getPrimaryOrFirstTunnel(): TunnelConf?
 
 	suspend fun getStartTunnelConfig(): TunnelConf?

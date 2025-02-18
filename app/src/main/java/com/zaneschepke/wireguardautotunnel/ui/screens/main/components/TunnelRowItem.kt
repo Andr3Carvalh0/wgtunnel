@@ -31,7 +31,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavControll
 import com.zaneschepke.wireguardautotunnel.util.extensions.asColor
 
 @Composable
-fun TunnelRowItem(
+internal fun TunnelRowItem(
 	isActive: Boolean,
 	expanded: Boolean,
 	isSelected: Boolean,

@@ -34,7 +34,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun LocationDisclosureScreen(appViewModel: AppViewModel, appUiState: AppUiState) {
+internal fun LocationDisclosureScreen(appViewModel: AppViewModel, appUiState: AppUiState) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
 

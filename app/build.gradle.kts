@@ -8,21 +8,6 @@ plugins {
 	alias(libs.plugins.grgit)
 }
 
-val versionFile = file("$rootDir/versionCode.txt")
-
-val versionCodeIncrement = with(getBuildTaskName().lowercase()) {
-	when {
-		this.contains(Constants.NIGHTLY) || this.contains(Constants.PRERELEASE) -> {
-			if (versionFile.exists()) {
-				versionFile.readText().trim().toInt() + 1
-			} else {
-				1
-			}
-		}
-		else -> 0
-	}
-}
-
 android {
 	namespace = Constants.APP_ID
 	compileSdk = Constants.TARGET_SDK
@@ -43,16 +28,14 @@ android {
 		applicationId = Constants.APP_ID
 		minSdk = Constants.MIN_SDK
 		targetSdk = Constants.TARGET_SDK
-		versionCode = Constants.VERSION_CODE + versionCodeIncrement
-		versionName = determineVersionName()
+		versionCode = Constants.VERSION_CODE
+		versionName = Constants.VERSION_NAME
 
 		ksp { arg("room.schemaLocation", "$projectDir/schemas") }
 
 		sourceSets {
 			getByName("debug").assets.srcDirs(files("$projectDir/schemas")) // Room
 		}
-
-		buildConfigField("String[]", "LANGUAGES", "new String[]{ ${languageList().joinToString(separator = ", ") { "\"$it\"" }} }")
 
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		vectorDrawables { useSupportLibrary = true }
@@ -93,22 +76,6 @@ android {
 			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.debug\"")
 		}
 
-		create(Constants.PRERELEASE) {
-			initWith(buildTypes.getByName(Constants.RELEASE))
-			applicationIdSuffix = ".prerelease"
-			versionNameSuffix = "-pre"
-			resValue("string", "app_name", "PiVPN - Pre")
-			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.pre\"")
-		}
-
-		create(Constants.NIGHTLY) {
-			initWith(buildTypes.getByName(Constants.RELEASE))
-			applicationIdSuffix = ".nightly"
-			versionNameSuffix = "-nightly"
-			resValue("string", "app_name", "PiVPN - Nightly")
-			resValue("string", "provider", "\"${Constants.APP_NAME}.provider.nightly\"")
-		}
-
 		applicationVariants.all {
 			val variant = this
 			variant.outputs
@@ -119,16 +86,6 @@ android {
 							"${variant.buildType.name}-${variant.versionName}.apk"
 					output.outputFileName = outputFileName
 				}
-		}
-	}
-	flavorDimensions.add(Constants.TYPE)
-	productFlavors {
-		create("fdroid") {
-			dimension = Constants.TYPE
-			proguardFile("fdroid-rules.pro")
-		}
-		create("general") {
-			dimension = Constants.TYPE
 		}
 	}
 	compileOptions {
@@ -216,29 +173,4 @@ dependencies {
 
 	// splash
 	implementation(libs.androidx.core.splashscreen)
-}
-
-fun determineVersionName(): String = with(getBuildTaskName().lowercase()) {
-	when {
-		contains(Constants.NIGHTLY) || contains(Constants.PRERELEASE) ->
-			Constants.VERSION_NAME +
-				"-${grgitService.service.get().grgit.head().abbreviatedId}"
-		else -> Constants.VERSION_NAME
-	}
-}
-
-val incrementVersionCode by tasks.registering {
-	doLast {
-		val versionFile = file("$rootDir/versionCode.txt")
-		if (versionFile.exists()) {
-			versionFile.writeText(versionCodeIncrement.toString())
-			println("Incremented versionCode to $versionCodeIncrement")
-		}
-	}
-}
-
-tasks.whenTaskAdded {
-	if (name.startsWith("assemble") && !name.lowercase().contains("debug")) {
-		dependsOn(incrementVersionCode)
-	}
 }

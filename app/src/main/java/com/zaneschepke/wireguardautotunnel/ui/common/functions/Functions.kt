@@ -12,7 +12,10 @@ import androidx.compose.runtime.Composable
 import com.zaneschepke.wireguardautotunnel.util.Constants
 
 @Composable
-fun rememberFileImportLauncherForResult(onNoFileExplorer: () -> Unit, onData: (data: Uri) -> Unit): ManagedActivityResultLauncher<String, Uri?> {
+internal fun rememberFileImportLauncherForResult(
+	onNoFileExplorer: () -> Unit,
+	onData: (data: Uri) -> Unit,
+): ManagedActivityResultLauncher<String, Uri?> {
 	return rememberLauncherForActivityResult(
 		object : ActivityResultContracts.GetContent() {
 			override fun createIntent(context: Context, input: String): Intent {

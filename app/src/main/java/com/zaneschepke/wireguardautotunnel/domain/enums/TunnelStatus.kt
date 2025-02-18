@@ -1,15 +1,11 @@
 package com.zaneschepke.wireguardautotunnel.domain.enums
 
-enum class TunnelStatus {
+internal enum class TunnelStatus {
 	UP,
 	DOWN,
 	;
 
-	fun isDown(): Boolean {
-		return this == DOWN
-	}
+	fun isDown(): Boolean = this == DOWN
 
-	fun isUp(): Boolean {
-		return this == UP
-	}
+	fun isUp(): Boolean = this == UP
 }

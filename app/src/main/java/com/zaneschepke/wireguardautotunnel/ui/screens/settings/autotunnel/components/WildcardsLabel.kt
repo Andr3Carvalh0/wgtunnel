@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontStyle
 import com.zaneschepke.wireguardautotunnel.R
 
 @Composable
-fun WildcardsLabel() {
+internal fun WildcardsLabel() {
 	Text(
 		stringResource(R.string.wildcards_active),
 		style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.outline, fontStyle = FontStyle.Italic),

@@ -12,7 +12,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 
 @Composable
-fun ConfigurationTextBox(
+internal fun ConfigurationTextBox(
 	value: String,
 	hint: String,
 	onValueChange: (String) -> Unit,

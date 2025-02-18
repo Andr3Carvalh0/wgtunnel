@@ -4,7 +4,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import timber.log.Timber
 
-class DatabaseCallback : RoomDatabase.Callback() {
+internal class DatabaseCallback : RoomDatabase.Callback() {
 	override fun onCreate(db: SupportSQLiteDatabase) = db.run {
 		// Notice non-ui thread is here
 		beginTransaction()

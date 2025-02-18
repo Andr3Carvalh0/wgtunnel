@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 
 @Entity(indices = [Index(value = ["name"], unique = true)])
-data class TunnelConfig(
+internal data class TunnelConfig(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
 	@ColumnInfo(name = "name") val name: String,
 	@ColumnInfo(name = "wg_quick") val wgQuick: String,
@@ -68,13 +68,11 @@ data class TunnelConfig(
 	var isIpv4Preferred: Boolean = true,
 ) {
 
-	fun toTunnel(): TunnelConf {
-		return TunnelConf(
-			id, name, wgQuick, tunnelNetworks, isMobileDataTunnel,
-			isPrimaryTunnel, amQuick, isActive, isPingEnabled, pingInterval,
-			pingCooldown, pingIp, isEthernetTunnel, isIpv4Preferred,
-		)
-	}
+	fun toTunnel(): TunnelConf = TunnelConf(
+		id, name, wgQuick, tunnelNetworks, isMobileDataTunnel,
+		isPrimaryTunnel, amQuick, isActive, isPingEnabled, pingInterval,
+		pingCooldown, pingIp, isEthernetTunnel, isIpv4Preferred,
+	)
 
 	companion object {
 

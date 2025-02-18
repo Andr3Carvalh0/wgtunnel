@@ -33,7 +33,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TrustedNetworkTextBox(
+internal fun TrustedNetworkTextBox(
 	trustedNetworks: List<String>,
 	onDelete: (ssid: String) -> Unit,
 	currentText: String,

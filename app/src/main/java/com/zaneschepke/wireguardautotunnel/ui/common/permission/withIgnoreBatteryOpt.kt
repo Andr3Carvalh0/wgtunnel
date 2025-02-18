@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.zaneschepke.wireguardautotunnel.util.extensions.isBatteryOptimizationsDisabled
 
 @Composable
-inline fun withIgnoreBatteryOpt(ignore: Boolean, crossinline callback: () -> Unit): () -> Unit {
+internal inline fun withIgnoreBatteryOpt(ignore: Boolean, crossinline callback: () -> Unit): () -> Unit {
 	val context = LocalContext.current
 	val batteryActivity =
 		rememberLauncherForActivityResult(

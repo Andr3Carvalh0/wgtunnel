@@ -10,10 +10,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class RoomSettingsRepository(
-	private val settingsDoa: SettingsDao,
-	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : AppSettingRepository {
+internal class RoomSettingsRepository(private val settingsDoa: SettingsDao, @IoDispatcher private val ioDispatcher: CoroutineDispatcher) :
+	AppSettingRepository {
 
 	override suspend fun save(appSettings: AppSettings) {
 		withContext(ioDispatcher) {
@@ -23,9 +21,7 @@ class RoomSettingsRepository(
 
 	override val flow = settingsDoa.getSettingsFlow().flowOn(ioDispatcher).map { it.toAppSettings() }
 
-	override suspend fun get(): AppSettings {
-		return withContext(ioDispatcher) {
-			(settingsDoa.getAll().firstOrNull() ?: Settings()).toAppSettings()
-		}
+	override suspend fun get(): AppSettings = withContext(ioDispatcher) {
+		(settingsDoa.getAll().firstOrNull() ?: Settings()).toAppSettings()
 	}
 }

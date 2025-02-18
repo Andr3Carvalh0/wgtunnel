@@ -16,7 +16,7 @@ import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TunnelForegroundService : LifecycleService() {
+internal class TunnelForegroundService : LifecycleService() {
 
 	@Inject
 	lateinit var notificationManager: NotificationManager
@@ -58,13 +58,11 @@ class TunnelForegroundService : LifecycleService() {
 		super.onDestroy()
 	}
 
-	private fun createNotification(tunnelConf: TunnelConf): Notification {
-		return notificationManager.createNotification(
-			WireGuardNotification.NotificationChannels.VPN,
-			title = "${getString(R.string.tunnel_running)} - ${tunnelConf.tunName}",
-			actions = listOf(
-				notificationManager.createNotificationAction(NotificationAction.TUNNEL_OFF, tunnelConf.id),
-			),
-		)
-	}
+	private fun createNotification(tunnelConf: TunnelConf): Notification = notificationManager.createNotification(
+		WireGuardNotification.NotificationChannels.VPN,
+		title = "${getString(R.string.tunnel_running)} - ${tunnelConf.tunName}",
+		actions = listOf(
+			notificationManager.createNotificationAction(NotificationAction.TUNNEL_OFF, tunnelConf.id),
+		),
+	)
 }

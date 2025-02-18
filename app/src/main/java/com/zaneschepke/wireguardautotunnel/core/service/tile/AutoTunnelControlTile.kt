@@ -15,7 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AutoTunnelControlTile : TileService() {
+internal class AutoTunnelControlTile : TileService() {
+
 	@Inject
 	lateinit var appDataRepository: AppDataRepository
 

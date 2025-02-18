@@ -17,9 +17,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class InternetConnectivityMonitor
-@Inject
-constructor(
+internal class InternetConnectivityMonitor @Inject constructor(
 	@ApplicationContext private val context: Context,
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : NetworkMonitor {

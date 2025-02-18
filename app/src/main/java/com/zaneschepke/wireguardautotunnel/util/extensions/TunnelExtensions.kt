@@ -2,7 +2,6 @@ package com.zaneschepke.wireguardautotunnel.util.extensions
 
 import androidx.compose.ui.graphics.Color
 import com.wireguard.android.backend.BackendException
-import com.wireguard.android.util.RootShell
 import com.wireguard.config.Peer
 import com.zaneschepke.wireguardautotunnel.domain.enums.BackendError
 import com.zaneschepke.wireguardautotunnel.domain.enums.BackendState
@@ -21,15 +20,14 @@ import org.amnezia.awg.config.Config
 import timber.log.Timber
 import java.net.InetAddress
 
-fun TunnelStatistics.mapPeerStats(): Map<org.amnezia.awg.crypto.Key, TunnelStatistics.PeerStats?> {
-	return this.getPeers().associateWith { key -> (this.peerStats(key)) }
+internal fun TunnelStatistics.mapPeerStats(): Map<org.amnezia.awg.crypto.Key, TunnelStatistics.PeerStats?> = this.getPeers().associateWith { key ->
+	(this.peerStats(key))
 }
 
-fun TunnelStatistics.PeerStats.latestHandshakeSeconds(): Long? {
-	return NumberUtils.getSecondsBetweenTimestampAndNow(this.latestHandshakeEpochMillis)
-}
+internal fun TunnelStatistics.PeerStats.latestHandshakeSeconds(): Long? =
+	NumberUtils.getSecondsBetweenTimestampAndNow(this.latestHandshakeEpochMillis)
 
-fun TunnelStatistics.PeerStats.handshakeStatus(): HandshakeStatus {
+internal fun TunnelStatistics.PeerStats.handshakeStatus(): HandshakeStatus {
 	// TODO add never connected status after duration
 	return this.latestHandshakeSeconds().let {
 		when {
@@ -43,7 +41,7 @@ fun TunnelStatistics.PeerStats.handshakeStatus(): HandshakeStatus {
 	}
 }
 
-fun Peer.isReachable(preferIpv4: Boolean): Boolean {
+internal fun Peer.isReachable(preferIpv4: Boolean): Boolean {
 	val host =
 		if (this.endpoint.isPresent &&
 			this.endpoint.get().getResolved(preferIpv4).isPresent
@@ -59,20 +57,18 @@ fun Peer.isReachable(preferIpv4: Boolean): Boolean {
 	return reachable
 }
 
-fun TunnelStatistics?.asColor(): Color {
-	return this?.mapPeerStats()
-		?.map { it.value?.handshakeStatus() }
-		?.let { statuses ->
-			when {
-				statuses.all { it == HandshakeStatus.HEALTHY } -> SilverTree
-				statuses.any { it == HandshakeStatus.STALE } -> Straw
-				statuses.all { it == HandshakeStatus.NOT_STARTED } -> Color.Gray
-				else -> Color.Gray
-			}
-		} ?: Color.Gray
-}
+internal fun TunnelStatistics?.asColor(): Color = this?.mapPeerStats()
+	?.map { it.value?.handshakeStatus() }
+	?.let { statuses ->
+		when {
+			statuses.all { it == HandshakeStatus.HEALTHY } -> SilverTree
+			statuses.any { it == HandshakeStatus.STALE } -> Straw
+			statuses.all { it == HandshakeStatus.NOT_STARTED } -> Color.Gray
+			else -> Color.Gray
+		}
+	} ?: Color.Gray
 
-fun Config.toWgQuickString(): String {
+internal fun Config.toWgQuickString(): String {
 	val amQuick = toAwgQuickString(true)
 	val lines = amQuick.lines().toMutableList()
 	val linesIterator = lines.iterator()
@@ -87,46 +83,20 @@ fun Config.toWgQuickString(): String {
 	return lines.joinToString(System.lineSeparator())
 }
 
-fun RootShell.getCurrentWifiName(): String? {
-	val response = mutableListOf<String>()
-	this.run(response, "dumpsys wifi | grep 'Supplicant state: COMPLETED' | grep -o 'SSID: [^,]*' | cut -d ' ' -f2- | tr -d '\"'")
-	return response.firstOrNull()
+internal fun BackendState.asAmBackendState(): Backend.BackendState = Backend.BackendState.valueOf(this.name)
+
+internal fun Tunnel.State.asTunnelState(): TunnelStatus = when (this) {
+	Tunnel.State.DOWN -> DOWN
+	Tunnel.State.UP -> UP
 }
 
-fun Backend.BackendState.asBackendState(): BackendState {
-	return BackendState.valueOf(this.name)
+internal fun BackendException.toBackendError(): BackendError = when (this.reason) {
+	BackendException.Reason.VPN_NOT_AUTHORIZED -> BackendError.Unauthorized
+	BackendException.Reason.DNS_RESOLUTION_FAILURE -> BackendError.DNS
+	else -> BackendError.Unauthorized
 }
 
-fun BackendState.asAmBackendState(): Backend.BackendState {
-	return Backend.BackendState.valueOf(this.name)
-}
-
-fun Tunnel.State.asTunnelState(): TunnelStatus {
-	return when (this) {
-		Tunnel.State.DOWN -> DOWN
-		Tunnel.State.UP -> UP
-	}
-}
-
-fun BackendException.toBackendError(): BackendError {
-	return when (this.reason) {
-		BackendException.Reason.VPN_NOT_AUTHORIZED -> BackendError.Unauthorized
-		BackendException.Reason.DNS_RESOLUTION_FAILURE -> BackendError.DNS
-		else -> BackendError.Unauthorized
-	}
-}
-
-fun org.amnezia.awg.backend.BackendException.toBackendError(): BackendError {
-	return when (this.reason) {
-		org.amnezia.awg.backend.BackendException.Reason.VPN_NOT_AUTHORIZED -> BackendError.Unauthorized
-		org.amnezia.awg.backend.BackendException.Reason.DNS_RESOLUTION_FAILURE -> BackendError.DNS
-		else -> BackendError.Unauthorized
-	}
-}
-
-fun com.wireguard.android.backend.Tunnel.State.asTunnelState(): TunnelStatus {
-	return when (this) {
-		com.wireguard.android.backend.Tunnel.State.DOWN -> DOWN
-		com.wireguard.android.backend.Tunnel.State.UP -> UP
-	}
+internal fun com.wireguard.android.backend.Tunnel.State.asTunnelState(): TunnelStatus = when (this) {
+	com.wireguard.android.backend.Tunnel.State.DOWN -> DOWN
+	com.wireguard.android.backend.Tunnel.State.UP -> UP
 }

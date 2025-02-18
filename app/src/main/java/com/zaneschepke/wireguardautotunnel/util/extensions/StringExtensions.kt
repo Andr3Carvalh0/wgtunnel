@@ -3,9 +3,9 @@ package com.zaneschepke.wireguardautotunnel.util.extensions
 import timber.log.Timber
 import java.util.regex.Pattern
 
-val hasNumberInParentheses = """^(.+?)\((\d+)\)$""".toRegex()
+internal val hasNumberInParentheses = """^(.+?)\((\d+)\)$""".toRegex()
 
-fun String.isValidIpv4orIpv6Address(): Boolean {
+internal fun String.isValidIpv4orIpv6Address(): Boolean {
 	val ipv4Pattern = Pattern.compile(
 		"^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\$",
 	)
@@ -15,19 +15,17 @@ fun String.isValidIpv4orIpv6Address(): Boolean {
 	return ipv4Pattern.matcher(this).matches() || ipv6Pattern.matcher(this).matches()
 }
 
-fun String.hasNumberInParentheses(): Boolean {
-	return hasNumberInParentheses.matches(this)
-}
+internal fun String.hasNumberInParentheses(): Boolean = hasNumberInParentheses.matches(this)
 
 // Function to extract name and number
-fun String.extractNameAndNumber(): Pair<String, Int>? {
+internal fun String.extractNameAndNumber(): Pair<String, Int>? {
 	val matchResult = hasNumberInParentheses.matchEntire(this)
 	return matchResult?.let {
 		Pair(it.groupValues[1], it.groupValues[2].toInt())
 	}
 }
 
-fun List<String>.isMatchingToWildcardList(value: String): Boolean {
+internal fun List<String>.isMatchingToWildcardList(value: String): Boolean {
 	val excludeValues = this.filter { it.startsWith("!") }.map { it.removePrefix("!").transformWildcardsToRegex() }
 	Timber.d("Excluded values: $excludeValues")
 	val includedValues = this.filter { !it.startsWith("!") }.map { it.transformWildcardsToRegex() }
@@ -39,11 +37,9 @@ fun List<String>.isMatchingToWildcardList(value: String): Boolean {
 	return matches.isNotEmpty() && excludedMatches.isEmpty()
 }
 
-fun String.transformWildcardsToRegex(): Regex {
-	return this.replaceUnescapedChar("*", ".*").replaceUnescapedChar("?", ".").toRegex()
-}
+internal fun String.transformWildcardsToRegex(): Regex = this.replaceUnescapedChar("*", ".*").replaceUnescapedChar("?", ".").toRegex()
 
-fun String.replaceUnescapedChar(charToReplace: String, replacement: String): String {
+internal fun String.replaceUnescapedChar(charToReplace: String, replacement: String): String {
 	val escapedChar = Regex.escape(charToReplace)
 	val regex = "(?<!\\\\)(?<!(?<!\\\\)\\\\)($escapedChar)".toRegex()
 	return regex.replace(this) { matchResult ->
@@ -58,10 +54,6 @@ fun String.replaceUnescapedChar(charToReplace: String, replacement: String): Str
 	}
 }
 
-fun Iterable<String>.joinAndTrim(): String {
-	return this.joinToString(", ").trim()
-}
+internal fun Iterable<String>.joinAndTrim(): String = this.joinToString(", ").trim()
 
-fun String.toTrimmedList(): List<String> {
-	return this.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-}
+internal fun String.toTrimmedList(): List<String> = this.split(",").map { it.trim() }.filter { it.isNotEmpty() }

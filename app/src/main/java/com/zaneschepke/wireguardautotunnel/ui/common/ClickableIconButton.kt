@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
-fun ClickableIconButton(onClick: () -> Unit, onIconClick: () -> Unit, text: String, icon: ImageVector, enabled: Boolean = true) {
+internal fun ClickableIconButton(onClick: () -> Unit, onIconClick: () -> Unit, text: String, icon: ImageVector, enabled: Boolean = true) {
 	TextButton(
 		onClick = onClick,
 		enabled = enabled,

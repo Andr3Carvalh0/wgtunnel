@@ -27,7 +27,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.textbox.CustomTextField
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun SubmitConfigurationTextBox(
+internal fun SubmitConfigurationTextBox(
 	value: String?,
 	label: String,
 	hint: String,

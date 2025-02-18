@@ -2,7 +2,7 @@ package com.zaneschepke.wireguardautotunnel.domain.entity
 
 import com.zaneschepke.wireguardautotunnel.ui.theme.Theme
 
-data class AppState(
+internal data class AppState(
 	val isLocationDisclosureShown: Boolean,
 	val isBatteryOptimizationDisableShown: Boolean,
 	val isPinLockEnabled: Boolean,

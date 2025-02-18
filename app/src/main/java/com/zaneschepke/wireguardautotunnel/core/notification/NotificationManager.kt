@@ -8,8 +8,10 @@ import com.zaneschepke.wireguardautotunnel.domain.enums.NotificationAction
 import com.zaneschepke.wireguardautotunnel.core.notification.WireGuardNotification.NotificationChannels
 import com.zaneschepke.wireguardautotunnel.util.StringValue
 
-interface NotificationManager {
+internal interface NotificationManager {
+
 	val context: Context
+
 	fun createNotification(
 		channel: NotificationChannels,
 		title: String = "",

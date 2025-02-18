@@ -8,13 +8,7 @@ import com.zaneschepke.wireguardautotunnel.WireGuardAutoTunnel
 import com.zaneschepke.wireguardautotunnel.ui.Route
 import com.zaneschepke.wireguardautotunnel.ui.common.navigation.isCurrentRoute
 
-fun NavController.navigateAndForget(route: Route) {
-	navigate(route) {
-		popUpTo(0)
-	}
-}
-
-fun NavController.goFromRoot(route: Route) {
+internal fun NavController.goFromRoot(route: Route) {
 	if (currentBackStackEntry?.isCurrentRoute(route::class) == true) return
 	this.navigate(route) {
 		// Pop up to the start destination of the graph to
@@ -30,14 +24,8 @@ fun NavController.goFromRoot(route: Route) {
 	}
 }
 
-fun Dp.scaledHeight(): Dp {
-	return WireGuardAutoTunnel.instance.resizeHeight(this)
-}
+internal fun Dp.scaledHeight(): Dp = WireGuardAutoTunnel.instance.resizeHeight(this)
 
-fun Dp.scaledWidth(): Dp {
-	return WireGuardAutoTunnel.instance.resizeWidth(this)
-}
+internal fun Dp.scaledWidth(): Dp = WireGuardAutoTunnel.instance.resizeWidth(this)
 
-fun TextUnit.scaled(): TextUnit {
-	return WireGuardAutoTunnel.instance.resizeHeight(this)
-}
+internal fun TextUnit.scaled(): TextUnit = WireGuardAutoTunnel.instance.resizeHeight(this)

@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopNavBar(title: String, trailing: @Composable () -> Unit = {}, showBack: Boolean = true) {
+internal fun TopNavBar(title: String, trailing: @Composable () -> Unit = {}, showBack: Boolean = true) {
 	val navController = LocalNavController.current
 	CenterAlignedTopAppBar(
 		title = {

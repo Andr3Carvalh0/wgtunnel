@@ -36,7 +36,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 import com.zaneschepke.wireguardautotunnel.viewmodel.AppViewModel
 
 @Composable
-fun AdvancedScreen(appSettings: AppSettings, appViewModel: AppViewModel) {
+internal fun AdvancedScreen(appSettings: AppSettings, appViewModel: AppViewModel) {
 	var isDropDownExpanded by remember {
 		mutableStateOf(false)
 	}

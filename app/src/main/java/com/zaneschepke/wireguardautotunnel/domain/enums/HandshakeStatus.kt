@@ -1,6 +1,6 @@
 package com.zaneschepke.wireguardautotunnel.domain.enums
 
-enum class HandshakeStatus {
+internal enum class HandshakeStatus {
 	HEALTHY,
 	STALE,
 	UNKNOWN,

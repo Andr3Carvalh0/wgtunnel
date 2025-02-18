@@ -1,6 +1,6 @@
 package com.zaneschepke.wireguardautotunnel.domain.entity
 
-data class AppSettings(
+internal data class AppSettings(
 	val id: Int = 0,
 	val isAutoTunnelEnabled: Boolean = false,
 	val isTunnelOnMobileDataEnabled: Boolean = false,
@@ -16,7 +16,6 @@ data class AppSettings(
 	val isWildcardsEnabled: Boolean = false,
 	val isStopOnNoInternetEnabled: Boolean = false,
 	val isVpnKillSwitchEnabled: Boolean = false,
-	val isKernelKillSwitchEnabled: Boolean = false,
 	val isLanOnKillSwitchEnabled: Boolean = false,
 	val debounceDelaySeconds: Int = 3,
 	val isDisableKillSwitchOnTrustedEnabled: Boolean = false,

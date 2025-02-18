@@ -17,7 +17,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.button.ScaledSwitch
 import com.zaneschepke.wireguardautotunnel.ui.theme.SilverTree
 
 @Composable
-fun AutoTunnelRowItem(appUiState: AppUiState, onToggle: () -> Unit) {
+internal fun AutoTunnelRowItem(appUiState: AppUiState, onToggle: () -> Unit) {
 	ExpandingRowListItem(
 		leading = {
 			val icon = Icons.Rounded.Bolt

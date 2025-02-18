@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.zaneschepke.wireguardautotunnel.R
 
 @Composable
-fun GettingStartedLabel(onClick: (url: String) -> Unit) {
+internal fun GettingStartedLabel(onClick: (url: String) -> Unit) {
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.Center,

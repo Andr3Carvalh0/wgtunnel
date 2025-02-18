@@ -66,7 +66,7 @@ import java.text.Collator
 import java.util.Locale
 
 @Composable
-fun SplitTunnelScreen(tunnelConf: TunnelConf, viewModel: AppViewModel) {
+internal fun SplitTunnelScreen(tunnelConf: TunnelConf, viewModel: AppViewModel) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
 

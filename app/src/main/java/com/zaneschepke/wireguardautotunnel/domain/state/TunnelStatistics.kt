@@ -2,7 +2,7 @@ package com.zaneschepke.wireguardautotunnel.domain.state
 
 import org.amnezia.awg.crypto.Key
 
-abstract class TunnelStatistics {
+internal abstract class TunnelStatistics {
 	@JvmRecord
 	data class PeerStats(val rxBytes: Long, val txBytes: Long, val latestHandshakeEpochMillis: Long)
 

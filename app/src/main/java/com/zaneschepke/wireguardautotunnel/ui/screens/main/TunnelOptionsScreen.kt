@@ -51,7 +51,7 @@ import kotlin.text.isNullOrBlank
 import kotlin.text.toLong
 
 @Composable
-fun OptionsScreen(tunnelConf: TunnelConf, viewModel: TunnelOptionsViewModel = hiltViewModel()) {
+internal fun OptionsScreen(tunnelConf: TunnelConf, viewModel: TunnelOptionsViewModel = hiltViewModel()) {
 	val navController = LocalNavController.current
 
 	var currentText by remember { mutableStateOf("") }
@@ -216,9 +216,8 @@ fun OptionsScreen(tunnelConf: TunnelConf, viewModel: TunnelOptionsViewModel = hi
 											)
 										},
 									)
-									fun isSecondsError(seconds: String?): Boolean {
-										return seconds?.let { value -> if (value.isBlank()) false else value.toLong() >= Long.MAX_VALUE / 1000 } == true
-									}
+									fun isSecondsError(seconds: String?): Boolean =
+										seconds?.let { value -> if (value.isBlank()) false else value.toLong() >= Long.MAX_VALUE / 1000 } == true
 									SubmitConfigurationTextBox(
 										tunnelConf.pingInterval?.let { (it / 1000).toString() },
 										stringResource(R.string.set_custom_ping_internal),

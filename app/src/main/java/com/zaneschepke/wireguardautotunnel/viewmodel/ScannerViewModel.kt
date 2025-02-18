@@ -19,8 +19,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ScannerViewModel @Inject
-constructor(
+internal class ScannerViewModel @Inject constructor(
 	private val appDataRepository: AppDataRepository,
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
@@ -28,17 +27,15 @@ constructor(
 	private val _success = MutableSharedFlow<Boolean>()
 	val success = _success.asSharedFlow()
 
-	private suspend fun makeTunnelNameUnique(name: String): String {
-		return withContext(ioDispatcher) {
-			val tunnels = appDataRepository.tunnels.getAll()
-			var tunnelName = name
-			var num = 1
-			while (tunnels.any { it.tunName == tunnelName }) {
-				tunnelName = "$name($num)"
-				num++
-			}
-			tunnelName
+	private suspend fun makeTunnelNameUnique(name: String): String = withContext(ioDispatcher) {
+		val tunnels = appDataRepository.tunnels.getAll()
+		var tunnelName = name
+		var num = 1
+		while (tunnels.any { it.tunName == tunnelName }) {
+			tunnelName = "$name($num)"
+			num++
 		}
+		tunnelName
 	}
 
 	fun onTunnelQrResult(result: String) = viewModelScope.launch(ioDispatcher) {
@@ -54,12 +51,10 @@ constructor(
 		}
 	}
 
-	private fun generateQrCodeDefaultName(config: String): String {
-		return try {
-			TunnelConf.configFromAmQuick(config).peers[0].endpoint.get().host
-		} catch (e: Exception) {
-			Timber.Forest.e(e)
-			NumberUtils.generateRandomTunnelName()
-		}
+	private fun generateQrCodeDefaultName(config: String): String = try {
+		TunnelConf.configFromAmQuick(config).peers[0].endpoint.get().host
+	} catch (e: Exception) {
+		Timber.Forest.e(e)
+		NumberUtils.generateRandomTunnelName()
 	}
 }

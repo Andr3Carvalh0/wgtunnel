@@ -15,7 +15,7 @@ import com.zaneschepke.wireguardautotunnel.BuildConfig
 import com.zaneschepke.wireguardautotunnel.R
 
 @Composable
-fun VersionLabel() {
+internal fun VersionLabel() {
 	val clipboardManager = LocalClipboardManager.current
 	Row(
 		verticalAlignment = Alignment.CenterVertically,

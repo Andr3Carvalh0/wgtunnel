@@ -8,11 +8,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TunnelOptionsViewModel
-@Inject
-constructor(
-	appDataRepository: AppDataRepository,
-) : BaseViewModel(appDataRepository) {
+internal class TunnelOptionsViewModel @Inject constructor(appDataRepository: AppDataRepository) : BaseViewModel(appDataRepository) {
 
 	fun onTogglePrimaryTunnel(tunnelConf: TunnelConf) = viewModelScope.launch {
 		appDataRepository.tunnels.updatePrimaryTunnel(

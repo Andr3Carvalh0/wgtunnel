@@ -14,7 +14,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.dialog.InfoDialog
 import com.zaneschepke.wireguardautotunnel.util.extensions.launchAppSettings
 
 @Composable
-fun BackgroundLocationDialog(show: Boolean, onDismiss: () -> Unit, onAttest: () -> Unit) {
+internal fun BackgroundLocationDialog(show: Boolean, onDismiss: () -> Unit, onAttest: () -> Unit) {
 	val context = LocalContext.current
 	if (show) {
 		val alwaysOnDescription = buildAnnotatedString {

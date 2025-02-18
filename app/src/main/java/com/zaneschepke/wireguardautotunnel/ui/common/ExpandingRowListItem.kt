@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExpandingRowListItem(
+internal fun ExpandingRowListItem(
 	leading: @Composable () -> Unit,
 	text: String,
 	onHold: () -> Unit = {},

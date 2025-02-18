@@ -4,7 +4,7 @@ import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 import com.zaneschepke.wireguardautotunnel.util.extensions.Tunnels
 import kotlinx.coroutines.flow.Flow
 
-interface TunnelRepository {
+internal interface TunnelRepository {
 	val flow: Flow<List<TunnelConf>>
 
 	suspend fun getAll(): Tunnels

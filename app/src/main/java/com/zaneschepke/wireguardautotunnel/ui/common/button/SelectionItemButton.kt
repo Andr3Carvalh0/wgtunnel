@@ -25,7 +25,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun SelectionItemButton(
+internal fun SelectionItemButton(
 	leading: (@Composable () -> Unit)? = null,
 	buttonText: String,
 	trailing: (@Composable () -> Unit)? = null,

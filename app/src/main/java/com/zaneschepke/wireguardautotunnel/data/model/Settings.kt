@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.zaneschepke.wireguardautotunnel.domain.entity.AppSettings
 
 @Entity
-data class Settings(
+internal data class Settings(
 	@PrimaryKey(autoGenerate = true) val id: Int = 0,
 	@ColumnInfo(name = "is_tunnel_enabled") val isAutoTunnelEnabled: Boolean = false,
 	@ColumnInfo(name = "is_tunnel_on_mobile_data_enabled")
@@ -26,11 +26,6 @@ data class Settings(
 		defaultValue = "false",
 	)
 	val isTunnelOnWifiEnabled: Boolean = false,
-	@ColumnInfo(
-		name = "is_kernel_enabled",
-		defaultValue = "false",
-	)
-	val isKernelEnabled: Boolean = false,
 	@ColumnInfo(
 		name = "is_restore_on_boot_enabled",
 		defaultValue = "false",
@@ -57,11 +52,6 @@ data class Settings(
 	)
 	val isWildcardsEnabled: Boolean = false,
 	@ColumnInfo(
-		name = "is_wifi_by_shell_enabled",
-		defaultValue = "false",
-	)
-	val isWifiNameByShellEnabled: Boolean = false,
-	@ColumnInfo(
 		name = "is_stop_on_no_internet_enabled",
 		defaultValue = "false",
 	)
@@ -71,11 +61,6 @@ data class Settings(
 		defaultValue = "false",
 	)
 	val isVpnKillSwitchEnabled: Boolean = false,
-	@ColumnInfo(
-		name = "is_kernel_kill_switch_enabled",
-		defaultValue = "false",
-	)
-	val isKernelKillSwitchEnabled: Boolean = false,
 	@ColumnInfo(
 		name = "is_lan_on_kill_switch_enabled",
 		defaultValue = "false",
@@ -94,20 +79,47 @@ data class Settings(
 ) {
 
 	fun toAppSettings(): AppSettings = AppSettings(
-		id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs, isAlwaysOnVpnEnabled, isTunnelOnEthernetEnabled,
-		isShortcutsEnabled, isTunnelOnWifiEnabled, isKernelEnabled, isRestoreOnBootEnabled, isMultiTunnelEnabled, isPingEnabled,
-		isAmneziaEnabled, isWildcardsEnabled, isStopOnNoInternetEnabled, isVpnKillSwitchEnabled,
-		isLanOnKillSwitchEnabled, debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
+		id = id,
+		isAutoTunnelEnabled = isAutoTunnelEnabled,
+		isTunnelOnMobileDataEnabled = isTunnelOnMobileDataEnabled,
+		trustedNetworkSSIDs = trustedNetworkSSIDs,
+		isAlwaysOnVpnEnabled = isAlwaysOnVpnEnabled,
+		isTunnelOnEthernetEnabled = isTunnelOnEthernetEnabled,
+		isShortcutsEnabled = isShortcutsEnabled,
+		isTunnelOnWifiEnabled = isTunnelOnWifiEnabled,
+		isRestoreOnBootEnabled = isRestoreOnBootEnabled,
+		isMultiTunnelEnabled = isMultiTunnelEnabled,
+		isPingEnabled = isPingEnabled,
+		isAmneziaEnabled = isAmneziaEnabled,
+		isWildcardsEnabled = isWildcardsEnabled,
+		isStopOnNoInternetEnabled = isStopOnNoInternetEnabled,
+		isVpnKillSwitchEnabled = isVpnKillSwitchEnabled,
+		isLanOnKillSwitchEnabled = isLanOnKillSwitchEnabled,
+		debounceDelaySeconds = debounceDelaySeconds,
+		isDisableKillSwitchOnTrustedEnabled = isDisableKillSwitchOnTrustedEnabled,
 	)
 
 	companion object {
 		fun from(appSettings: AppSettings): Settings = with(appSettings) {
 			Settings(
-				id, isAutoTunnelEnabled, isTunnelOnMobileDataEnabled, trustedNetworkSSIDs.toMutableList(), isAlwaysOnVpnEnabled,
-				isTunnelOnEthernetEnabled, isShortcutsEnabled, isTunnelOnWifiEnabled, false, isRestoreOnBootEnabled,
-				isMultiTunnelEnabled, isPingEnabled, isAmneziaEnabled, isWildcardsEnabled, false,
-				isStopOnNoInternetEnabled, isVpnKillSwitchEnabled, isKernelKillSwitchEnabled, isLanOnKillSwitchEnabled,
-				debounceDelaySeconds, isDisableKillSwitchOnTrustedEnabled,
+				id = id,
+				isAutoTunnelEnabled = isAutoTunnelEnabled,
+				isTunnelOnMobileDataEnabled = isTunnelOnMobileDataEnabled,
+				trustedNetworkSSIDs = trustedNetworkSSIDs.toMutableList(),
+				isAlwaysOnVpnEnabled = isAlwaysOnVpnEnabled,
+				isTunnelOnEthernetEnabled = isTunnelOnEthernetEnabled,
+				isShortcutsEnabled = isShortcutsEnabled,
+				isTunnelOnWifiEnabled = isTunnelOnWifiEnabled,
+				isRestoreOnBootEnabled = isRestoreOnBootEnabled,
+				isMultiTunnelEnabled = isMultiTunnelEnabled,
+				isPingEnabled = isPingEnabled,
+				isAmneziaEnabled = isAmneziaEnabled,
+				isWildcardsEnabled = isWildcardsEnabled,
+				isStopOnNoInternetEnabled = isStopOnNoInternetEnabled,
+				isVpnKillSwitchEnabled = isVpnKillSwitchEnabled,
+				isLanOnKillSwitchEnabled = isLanOnKillSwitchEnabled,
+				debounceDelaySeconds = debounceDelaySeconds,
+				isDisableKillSwitchOnTrustedEnabled = isDisableKillSwitchOnTrustedEnabled,
 			)
 		}
 	}

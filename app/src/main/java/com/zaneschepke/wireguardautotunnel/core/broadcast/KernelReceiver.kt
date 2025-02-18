@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class KernelReceiver : BroadcastReceiver() {
+internal class KernelReceiver : BroadcastReceiver() {
 
 	@Inject
 	@ApplicationScope

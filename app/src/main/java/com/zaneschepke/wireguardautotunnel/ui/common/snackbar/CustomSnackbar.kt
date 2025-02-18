@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomSnackBar(message: String, isRtl: Boolean = true, containerColor: Color = MaterialTheme.colorScheme.surface) {
+internal fun CustomSnackBar(message: String, isRtl: Boolean = true, containerColor: Color = MaterialTheme.colorScheme.surface) {
 	Snackbar(
 		containerColor = containerColor,
 		modifier = Modifier.fillMaxWidth(2 / 3f)

@@ -12,10 +12,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class ViewModelModule {
-	@ViewModelScoped
+internal class ViewModelModule {
+
 	@Provides
-	fun provideFileUtils(@ApplicationContext context: Context, @IoDispatcher ioDispatcher: CoroutineDispatcher): FileUtils {
-		return FileUtils(context, ioDispatcher)
-	}
+	@ViewModelScoped
+	fun provideFileUtils(@ApplicationContext context: Context, @IoDispatcher ioDispatcher: CoroutineDispatcher): FileUtils =
+		FileUtils(context, ioDispatcher)
 }

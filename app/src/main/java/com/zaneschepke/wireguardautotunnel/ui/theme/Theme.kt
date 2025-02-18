@@ -40,7 +40,7 @@ private val LightColorScheme =
 		onBackground = ThemeColors.Light.onBackground,
 	)
 
-enum class Theme {
+internal enum class Theme {
 	AUTOMATIC,
 	LIGHT,
 	DARK,
@@ -48,7 +48,7 @@ enum class Theme {
 }
 
 @Composable
-fun WireguardAutoTunnelTheme(theme: Theme = Theme.AUTOMATIC, content: @Composable () -> Unit) {
+internal fun WireguardAutoTunnelTheme(theme: Theme = Theme.AUTOMATIC, content: @Composable () -> Unit) {
 	val context = LocalContext.current
 	var isDark = isSystemInDarkTheme()
 	val autoTheme = if (isDark) DarkColorScheme else LightColorScheme

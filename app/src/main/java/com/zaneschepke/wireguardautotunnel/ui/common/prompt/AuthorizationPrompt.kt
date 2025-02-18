@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 
 @Composable
-fun AuthorizationPrompt(onSuccess: () -> Unit, onFailure: () -> Unit, onError: (String) -> Unit) {
+internal fun AuthorizationPrompt(onSuccess: () -> Unit, onFailure: () -> Unit, onError: (String) -> Unit) {
 	val context = LocalContext.current
 	val biometricManager = BiometricManager.from(context)
 	val bio = biometricManager.canAuthenticate(BIOMETRIC_WEAK or DEVICE_CREDENTIAL)

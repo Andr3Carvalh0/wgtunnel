@@ -11,11 +11,11 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaled
 
 // Set of Material typography styles to start with
 
-val inter = FontFamily(
+internal val inter = FontFamily(
 	Font(R.font.inter),
 )
 
-val Typography =
+internal val Typography =
 	Typography(
 		bodyLarge = TextStyle(
 			fontFamily = inter,

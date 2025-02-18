@@ -31,7 +31,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun KillSwitchScreen(uiState: AppUiState, appViewModel: AppViewModel) {
+internal fun KillSwitchScreen(uiState: AppUiState, appViewModel: AppViewModel) {
 	val context = LocalContext.current
 
 	val toggleVpnSwitch = withVpnPermission<Boolean> { appViewModel.onToggleVpnKillSwitch(it) }

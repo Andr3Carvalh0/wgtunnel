@@ -13,9 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-open class BaseViewModel @Inject constructor(
-	protected val appDataRepository: AppDataRepository,
-) : ViewModel() {
+internal open class BaseViewModel @Inject constructor(protected val appDataRepository: AppDataRepository) : ViewModel() {
 
 	val appSettings: StateFlow<AppSettings?> = appDataRepository.settings.flow.stateIn(
 		scope = viewModelScope,

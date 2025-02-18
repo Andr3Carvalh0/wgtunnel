@@ -4,11 +4,10 @@ import androidx.room.TypeConverter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class DatabaseListConverters {
+internal class DatabaseListConverters {
+
 	@TypeConverter
-	fun listToString(value: MutableList<String>): String {
-		return Json.encodeToString(value)
-	}
+	fun listToString(value: MutableList<String>): String = Json.encodeToString(value)
 
 	@TypeConverter
 	fun stringToList(value: String): MutableList<String> {

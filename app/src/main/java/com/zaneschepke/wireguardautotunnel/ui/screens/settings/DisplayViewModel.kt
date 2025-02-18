@@ -9,9 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DisplayViewModel
-@Inject
-constructor(private val appStateRepository: AppStateRepository) : ViewModel() {
+internal class DisplayViewModel @Inject constructor(private val appStateRepository: AppStateRepository) : ViewModel() {
 
 	fun onThemeChange(theme: Theme) = viewModelScope.launch {
 		appStateRepository.setTheme(theme)

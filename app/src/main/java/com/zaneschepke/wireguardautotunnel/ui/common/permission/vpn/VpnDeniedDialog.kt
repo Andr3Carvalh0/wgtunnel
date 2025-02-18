@@ -14,7 +14,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.dialog.InfoDialog
 import com.zaneschepke.wireguardautotunnel.util.extensions.launchVpnSettings
 
 @Composable
-fun VpnDeniedDialog(show: Boolean, onDismiss: () -> Unit) {
+internal fun VpnDeniedDialog(show: Boolean, onDismiss: () -> Unit) {
 	val context = LocalContext.current
 	if (show) {
 		val alwaysOnDescription = buildAnnotatedString {

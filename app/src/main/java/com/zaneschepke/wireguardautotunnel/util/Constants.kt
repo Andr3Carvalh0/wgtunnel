@@ -1,12 +1,8 @@
 package com.zaneschepke.wireguardautotunnel.util
 
-object Constants {
-	const val BASE_LOG_FILE_NAME = "wg_tunnel_logs"
-	const val LOG_BUFFER_SIZE = 3_000L
-
+internal object Constants {
 	const val MANUAL_TUNNEL_CONFIG_ID = 0
 	const val BATTERY_SAVER_WATCHER_WAKE_LOCK_TIMEOUT = 10 * 60 * 1_000L // 10 minutes
-	const val WATCHER_COLLECTION_DELAY = 3_000L
 
 	const val CONF_FILE_EXTENSION = ".conf"
 	const val ZIP_FILE_EXTENSION = ".zip"
@@ -32,5 +28,4 @@ object Constants {
 	const val UNREADABLE_SSID = "<unknown ssid>"
 
 	val amProperties = listOf("Jc", "Jmin", "Jmax", "S1", "S2", "H1", "H2", "H3", "H4")
-	const val QR_CODE_NAME_PROPERTY = "# Name ="
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 
 @Composable
-fun ScaledSwitch(checked: Boolean, onClick: (checked: Boolean) -> Unit, enabled: Boolean = true, modifier: Modifier = Modifier) {
+internal fun ScaledSwitch(checked: Boolean, onClick: (checked: Boolean) -> Unit, enabled: Boolean = true, modifier: Modifier = Modifier) {
 	Switch(
 		checked,
 		{ onClick(it) },

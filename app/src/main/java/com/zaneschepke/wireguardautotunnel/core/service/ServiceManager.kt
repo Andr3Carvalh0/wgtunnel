@@ -21,8 +21,11 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ServiceManager
-@Inject constructor(private val context: Context, private val ioDispatcher: CoroutineDispatcher, private val appDataRepository: AppDataRepository) {
+internal class ServiceManager @Inject constructor(
+	private val context: Context,
+	private val ioDispatcher: CoroutineDispatcher,
+	private val appDataRepository: AppDataRepository,
+) {
 
 	private val _autoTunnelActive = MutableStateFlow(false)
 

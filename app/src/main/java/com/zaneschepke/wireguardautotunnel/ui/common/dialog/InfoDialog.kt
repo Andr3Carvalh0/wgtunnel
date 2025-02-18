@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import com.zaneschepke.wireguardautotunnel.R
 
 @Composable
-fun InfoDialog(
+internal fun InfoDialog(
 	onAttest: () -> Unit,
 	onDismiss: () -> Unit,
 	title: @Composable () -> Unit,

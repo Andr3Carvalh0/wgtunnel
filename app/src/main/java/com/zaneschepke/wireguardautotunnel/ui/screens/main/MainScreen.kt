@@ -62,7 +62,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) {
+internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), uiState: AppUiState) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
 	val clipboard = LocalClipboardManager.current

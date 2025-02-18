@@ -44,7 +44,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @AndroidEntryPoint
-class AutoTunnelService : LifecycleService() {
+internal class AutoTunnelService : LifecycleService() {
 
 	@Inject
 	lateinit var networkMonitor: NetworkMonitor

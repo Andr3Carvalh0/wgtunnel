@@ -13,18 +13,15 @@ import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
 import com.zaneschepke.wireguardautotunnel.di.MainDispatcher
 import com.zaneschepke.wireguardautotunnel.domain.enums.BackendState
 import com.zaneschepke.wireguardautotunnel.domain.repository.AppDataRepository
-import com.zaneschepke.wireguardautotunnel.util.LocaleUtil
-import com.zaneschepke.wireguardautotunnel.util.ReleaseTree
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
-class WireGuardAutoTunnel : Application() {
+internal class WireGuardAutoTunnel : Application() {
 
 	@Inject
 	@ApplicationScope
@@ -58,8 +55,6 @@ class WireGuardAutoTunnel : Application() {
 					.penaltyLog()
 					.build(),
 			)
-		} else {
-			Timber.plant(ReleaseTree())
 		}
 
 		GoBackend.setAlwaysOnCallback {
@@ -72,14 +67,6 @@ class WireGuardAutoTunnel : Application() {
 					}
 				} else {
 					Timber.Forest.w("Always-on VPN is not enabled in app settings")
-				}
-			}
-		}
-
-		applicationScope.launch {
-			appDataRepository.appState.getLocale()?.let {
-				withContext(mainDispatcher) {
-					LocaleUtil.changeLocale(it)
 				}
 			}
 		}

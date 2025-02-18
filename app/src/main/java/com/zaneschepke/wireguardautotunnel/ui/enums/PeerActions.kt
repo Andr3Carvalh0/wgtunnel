@@ -1,5 +1,5 @@
 package com.zaneschepke.wireguardautotunnel.ui.enums
 
-enum class PeerActions {
+internal enum class PeerActions {
 	EXCLUDE_LAN,
 }

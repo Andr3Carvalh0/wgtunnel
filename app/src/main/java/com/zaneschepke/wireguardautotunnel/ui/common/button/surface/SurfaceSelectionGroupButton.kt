@@ -23,7 +23,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledHeight
 import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 
 @Composable
-fun SurfaceSelectionGroupButton(items: List<SelectionItem>) {
+internal fun SurfaceSelectionGroupButton(items: List<SelectionItem>) {
 	Card(
 		modifier = Modifier.fillMaxWidth(),
 		shape = RoundedCornerShape(8.dp),

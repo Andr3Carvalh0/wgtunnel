@@ -12,7 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-inline fun <T> withVpnPermission(crossinline onSuccess: (t: T) -> Unit): (t: T) -> Unit {
+internal inline fun <T> withVpnPermission(crossinline onSuccess: (t: T) -> Unit): (t: T) -> Unit {
 	val context = LocalContext.current
 
 	var showVpnPermissionDialog by remember { mutableStateOf(false) }

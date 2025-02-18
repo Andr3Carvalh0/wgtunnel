@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.zaneschepke.wireguardautotunnel.ui.theme.iconSize
 
 @Composable
-fun ForwardButton(modifier: Modifier = Modifier.focusable(), onClick: () -> Unit) {
+internal fun ForwardButton(modifier: Modifier = Modifier.focusable(), onClick: () -> Unit) {
 	IconButton(
 		modifier = modifier,
 		onClick = onClick,

@@ -11,11 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TunnelAutoTunnelViewModel
-@Inject
-constructor(
-	appDataRepository: AppDataRepository,
-) : BaseViewModel(appDataRepository) {
+internal class TunnelAutoTunnelViewModel @Inject constructor(appDataRepository: AppDataRepository) : BaseViewModel(appDataRepository) {
 
 	fun onDeleteRunSSID(ssid: String, tunnelConfig: TunnelConf) = saveTunnel(
 		tunnelConfig.copy(

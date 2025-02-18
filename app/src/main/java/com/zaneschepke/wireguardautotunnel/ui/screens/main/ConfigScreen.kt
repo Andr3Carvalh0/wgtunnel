@@ -76,7 +76,7 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 import org.amnezia.awg.crypto.KeyPair
 
 @Composable
-fun ConfigScreen(tunnelConf: TunnelConf?, appViewModel: AppViewModel) {
+internal fun ConfigScreen(tunnelConf: TunnelConf?, appViewModel: AppViewModel) {
 	val context = LocalContext.current
 	val snackbar = SnackbarController.current
 	val clipboardManager: ClipboardManager = LocalClipboardManager.current
@@ -689,8 +689,9 @@ fun ConfigScreen(tunnelConf: TunnelConf?, appViewModel: AppViewModel) {
 							hint = stringResource(R.string.base64_key),
 							modifier = Modifier.fillMaxWidth(),
 						)
-						val presharedKeyEnabled = (tunnelConf == null) || isAuthenticated ||
-							with(configPair.second?.peers[index]?.preSharedKey) { this?.isEmpty == true || this?.isPresent == false }
+						val presharedKeyEnabled = (tunnelConf == null) ||
+							isAuthenticated ||
+							with(configPair.second?.peers?.get(index)?.preSharedKey) { this?.isEmpty == true || this?.isPresent == false }
 						OutlinedTextField(
 							textStyle = MaterialTheme.typography.labelLarge,
 							modifier =

@@ -43,7 +43,11 @@ import com.zaneschepke.wireguardautotunnel.util.extensions.scaledWidth
 import com.zaneschepke.wireguardautotunnel.viewmodel.TunnelAutoTunnelViewModel
 
 @Composable
-fun TunnelAutoTunnelScreen(tunnelConf: TunnelConf, appSettings: AppSettings, tunnelAutoTunnelViewModel: TunnelAutoTunnelViewModel = hiltViewModel()) {
+internal fun TunnelAutoTunnelScreen(
+	tunnelConf: TunnelConf,
+	appSettings: AppSettings,
+	tunnelAutoTunnelViewModel: TunnelAutoTunnelViewModel = hiltViewModel(),
+) {
 	var currentText by remember { mutableStateOf("") }
 
 	LaunchedEffect(tunnelConf.tunnelNetworks) {

@@ -2,7 +2,7 @@ package com.zaneschepke.wireguardautotunnel.ui
 
 import kotlinx.serialization.Serializable
 
-sealed class Route {
+internal sealed class Route {
 
 	@Serializable
 	data object Settings : Route()
@@ -26,25 +26,17 @@ sealed class Route {
 	data object Main : Route()
 
 	@Serializable
-	data class TunnelOptions(
-		val id: Int,
-	) : Route()
+	data class TunnelOptions(val id: Int) : Route()
 
 	@Serializable
 	data object Scanner : Route()
 
 	@Serializable
-	data class Config(
-		val id: Int,
-	) : Route()
+	data class Config(val id: Int) : Route()
 
 	@Serializable
-	data class SplitTunnel(
-		val id: Int,
-	) : Route()
+	data class SplitTunnel(val id: Int) : Route()
 
 	@Serializable
-	data class TunnelAutoTunnel(
-		val id: Int,
-	) : Route()
+	data class TunnelAutoTunnel(val id: Int) : Route()
 }

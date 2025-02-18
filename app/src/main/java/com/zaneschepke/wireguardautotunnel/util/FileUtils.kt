@@ -11,32 +11,25 @@ import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class FileUtils(
-	private val context: Context,
-	private val ioDispatcher: CoroutineDispatcher,
-) {
+internal class FileUtils(private val context: Context, private val ioDispatcher: CoroutineDispatcher) {
 
-	suspend fun createWgFiles(tunnels: List<TunnelConf>): List<File> {
-		return withContext(ioDispatcher) {
-			tunnels.map { config ->
-				val file = File(context.cacheDir, "${config.tunName}-wg.conf")
-				file.outputStream().use {
-					it.write(config.wgQuick.toByteArray())
-				}
-				file
+	suspend fun createWgFiles(tunnels: List<TunnelConf>): List<File> = withContext(ioDispatcher) {
+		tunnels.map { config ->
+			val file = File(context.cacheDir, "${config.tunName}-wg.conf")
+			file.outputStream().use {
+				it.write(config.wgQuick.toByteArray())
 			}
+			file
 		}
 	}
 
-	suspend fun createAmFiles(tunnels: List<TunnelConf>): List<File> {
-		return withContext(ioDispatcher) {
-			tunnels.filter { it.amQuick != TunnelConfig.AM_QUICK_DEFAULT }.map { config ->
-				val file = File(context.cacheDir, "${config.tunName}-am.conf")
-				file.outputStream().use {
-					it.write(config.amQuick.toByteArray())
-				}
-				file
+	suspend fun createAmFiles(tunnels: List<TunnelConf>): List<File> = withContext(ioDispatcher) {
+		tunnels.filter { it.amQuick != TunnelConfig.AM_QUICK_DEFAULT }.map { config ->
+			val file = File(context.cacheDir, "${config.tunName}-am.conf")
+			file.outputStream().use {
+				it.write(config.amQuick.toByteArray())
 			}
+			file
 		}
 	}
 
@@ -61,15 +54,13 @@ class FileUtils(
 		}
 	}
 
-	suspend fun createNewShareFile(name: String): File {
-		return withContext(ioDispatcher) {
-			val sharePath = File(context.filesDir, "external_files")
-			if (sharePath.exists()) sharePath.delete()
-			sharePath.mkdir()
-			val file = File("${sharePath.path}/$name")
-			if (file.exists()) file.delete()
-			file.createNewFile()
-			file
-		}
+	suspend fun createNewShareFile(name: String): File = withContext(ioDispatcher) {
+		val sharePath = File(context.filesDir, "external_files")
+		if (sharePath.exists()) sharePath.delete()
+		sharePath.mkdir()
+		val file = File("${sharePath.path}/$name")
+		if (file.exists()) file.delete()
+		file.createNewFile()
+		file
 	}
 }

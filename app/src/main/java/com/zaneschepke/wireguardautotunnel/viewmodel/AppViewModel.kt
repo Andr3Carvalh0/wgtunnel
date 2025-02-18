@@ -16,7 +16,6 @@ import com.zaneschepke.wireguardautotunnel.ui.state.InterfaceProxy
 import com.zaneschepke.wireguardautotunnel.ui.state.PeerProxy
 import com.zaneschepke.wireguardautotunnel.ui.state.SplitTunnelApp
 import com.zaneschepke.wireguardautotunnel.util.Constants
-import com.zaneschepke.wireguardautotunnel.util.LocaleUtil
 import com.zaneschepke.wireguardautotunnel.util.StringValue
 import com.zaneschepke.wireguardautotunnel.util.extensions.getAllInternetCapablePackages
 import com.zaneschepke.wireguardautotunnel.util.extensions.withData
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -41,9 +39,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class AppViewModel
-@Inject
-constructor(
+internal class AppViewModel @Inject constructor(
 	appDataRepository: AppDataRepository,
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 	private val tunnelManager: TunnelManager,
@@ -126,14 +122,6 @@ constructor(
 					isAlwaysOnVpnEnabled = !isAlwaysOnVpnEnabled,
 				),
 			)
-		}
-	}
-
-	fun onLocaleChange(localeTag: String) = viewModelScope.launch {
-		appDataRepository.appState.setLocale(localeTag)
-		LocaleUtil.changeLocale(localeTag)
-		_configurationChange.update {
-			true
 		}
 	}
 

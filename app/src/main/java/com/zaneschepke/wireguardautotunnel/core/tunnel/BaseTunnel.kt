@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
-open class BaseTunnel(
+internal open class BaseTunnel(
 	@IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 	@ApplicationScope private val applicationScope: CoroutineScope,
 	private val networkMonitor: NetworkMonitor,
@@ -95,13 +95,9 @@ open class BaseTunnel(
 	override suspend fun setBackendState(backendState: BackendState, allowedIps: Collection<String>) {
 	}
 
-	override suspend fun runningTunnelNames(): Set<String> {
-		return emptySet()
-	}
+	override suspend fun runningTunnelNames(): Set<String> = emptySet()
 
-	override suspend fun activeTunnels(): StateFlow<List<TunnelConf>> {
-		return tunnels.asStateFlow()
-	}
+	override suspend fun activeTunnels(): StateFlow<List<TunnelConf>> = tunnels.asStateFlow()
 
 	override suspend fun startTunnel(tunnelConf: TunnelConf) {
 		if (tunnels.value.any { it.id == tunnelConf.id }) return Timber.w("Tunnel already running")
@@ -115,9 +111,7 @@ open class BaseTunnel(
 	open suspend fun toggleTunnel(tunnelConf: TunnelConf, state: TunnelStatus) {
 	}
 
-	open suspend fun getStatistics(tunnelConf: TunnelConf): TunnelStatistics {
-		throw NotImplementedError("Get statistics not implemented in base class")
-	}
+	open suspend fun getStatistics(tunnelConf: TunnelConf): TunnelStatistics = throw NotImplementedError("Get statistics not implemented in base class")
 
 	internal suspend fun onTunnelStop(tunnelConf: TunnelConf) {
 		appDataRepository.tunnels.save(tunnelConf.copy(isActive = false))

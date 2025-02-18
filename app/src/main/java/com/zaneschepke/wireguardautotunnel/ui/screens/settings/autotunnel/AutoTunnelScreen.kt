@@ -63,7 +63,7 @@ import com.zaneschepke.wireguardautotunnel.viewmodel.AutoTunnelViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = hiltViewModel()) {
+internal fun AutoTunnelScreen(appSettings: AppSettings, viewModel: AutoTunnelViewModel = hiltViewModel()) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
 

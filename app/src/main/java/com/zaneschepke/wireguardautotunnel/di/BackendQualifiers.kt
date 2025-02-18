@@ -8,8 +8,4 @@ annotation class TunnelShell
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class Kernel
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class Userspace

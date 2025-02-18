@@ -14,12 +14,8 @@ import java.time.Instant
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel
-@Inject
-constructor(
-	private val appDataRepository: AppDataRepository,
-	private val fileUtils: FileUtils,
-) : ViewModel() {
+internal class SettingsViewModel @Inject constructor(private val appDataRepository: AppDataRepository, private val fileUtils: FileUtils) :
+	ViewModel() {
 
 	fun exportAllConfigs(context: Context) = viewModelScope.launch {
 		runCatching {

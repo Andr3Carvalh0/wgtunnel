@@ -4,7 +4,7 @@ import com.zaneschepke.wireguardautotunnel.domain.entity.TunnelConf
 import com.zaneschepke.wireguardautotunnel.domain.enums.BackendState
 import kotlinx.coroutines.flow.StateFlow
 
-interface TunnelProvider {
+internal interface TunnelProvider {
 
 	suspend fun activeTunnels(): StateFlow<List<TunnelConf>>
 

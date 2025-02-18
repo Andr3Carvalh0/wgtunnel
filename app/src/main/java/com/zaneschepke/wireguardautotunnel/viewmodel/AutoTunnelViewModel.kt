@@ -2,19 +2,16 @@ package com.zaneschepke.wireguardautotunnel.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.zaneschepke.wireguardautotunnel.R
-import com.zaneschepke.wireguardautotunnel.di.IoDispatcher
 import com.zaneschepke.wireguardautotunnel.domain.repository.AppDataRepository
 import com.zaneschepke.wireguardautotunnel.ui.common.snackbar.SnackbarController
 import com.zaneschepke.wireguardautotunnel.util.StringValue
 import com.zaneschepke.wireguardautotunnel.util.extensions.withData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AutoTunnelViewModel @Inject constructor(appDataRepository: AppDataRepository, @IoDispatcher private val ioDispatcher: CoroutineDispatcher) :
-	BaseViewModel(appDataRepository) {
+internal class AutoTunnelViewModel @Inject constructor(appDataRepository: AppDataRepository) : BaseViewModel(appDataRepository) {
 
 	fun onToggleTunnelOnWifi() = viewModelScope.launch {
 		appSettings.withData {

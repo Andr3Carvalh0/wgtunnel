@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ServiceModule {
+internal abstract class ServiceModule {
 
 	@Binds
 	abstract fun provideInternetConnectivityService(wifiService: InternetConnectivityMonitor): NetworkMonitor

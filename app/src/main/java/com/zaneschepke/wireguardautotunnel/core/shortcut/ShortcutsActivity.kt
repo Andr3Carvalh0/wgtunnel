@@ -14,7 +14,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShortcutsActivity : ComponentActivity() {
+internal class ShortcutsActivity : ComponentActivity() {
+
 	@Inject
 	lateinit var appDataRepository: AppDataRepository
 

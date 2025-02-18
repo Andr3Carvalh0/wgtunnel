@@ -15,7 +15,7 @@ import java.io.InputStream
 import java.net.InetAddress
 import kotlin.coroutines.CoroutineContext
 
-data class TunnelConf(
+internal data class TunnelConf(
 	val id: Int = 0,
 	val tunName: String,
 	val wgQuick: String,
@@ -30,25 +30,18 @@ data class TunnelConf(
 	val pingIp: String? = null,
 	val isEthernetTunnel: Boolean = false,
 	val isIpv4Preferred: Boolean = false,
-) : Tunnel, com.wireguard.android.backend.Tunnel {
+) : Tunnel,
+	com.wireguard.android.backend.Tunnel {
 
 	val state = MutableStateFlow(TunnelState())
 
-	fun toAmConfig(): org.amnezia.awg.config.Config {
-		return configFromAmQuick(amQuick.ifBlank { wgQuick })
-	}
+	fun toAmConfig(): org.amnezia.awg.config.Config = configFromAmQuick(amQuick.ifBlank { wgQuick })
 
-	fun toWgConfig(): Config {
-		return configFromWgQuick(wgQuick)
-	}
+	fun toWgConfig(): Config = configFromWgQuick(wgQuick)
 
-	override fun getName(): String {
-		return tunName
-	}
+	override fun getName(): String = tunName
 
-	override fun isIpv4ResolutionPreferred(): Boolean {
-		return isIpv4Preferred
-	}
+	override fun isIpv4ResolutionPreferred(): Boolean = isIpv4Preferred
 
 	override fun onStateChange(newState: Tunnel.State) {
 		state.update {
@@ -62,29 +55,23 @@ data class TunnelConf(
 		}
 	}
 
-	fun isQuickConfigChanged(updatedConf: TunnelConf): Boolean {
-		return updatedConf.wgQuick != wgQuick ||
-			updatedConf.amQuick != amQuick
-	}
+	fun isQuickConfigChanged(updatedConf: TunnelConf): Boolean = updatedConf.wgQuick != wgQuick ||
+		updatedConf.amQuick != amQuick
 
-	fun isPingConfigMatching(updatedConf: TunnelConf): Boolean {
-		return updatedConf.isPingEnabled == isPingEnabled &&
-			pingIp == updatedConf.pingIp &&
-			updatedConf.pingCooldown == pingCooldown &&
-			updatedConf.pingInterval == pingInterval
-	}
+	fun isPingConfigMatching(updatedConf: TunnelConf): Boolean = updatedConf.isPingEnabled == isPingEnabled &&
+		pingIp == updatedConf.pingIp &&
+		updatedConf.pingCooldown == pingCooldown &&
+		updatedConf.pingInterval == pingInterval
 
-	suspend fun pingTunnel(context: CoroutineContext): List<Boolean> {
-		return withContext(context) {
-			val config = toWgConfig()
-			if (pingIp != null) {
-				Timber.i("Pinging custom ip")
-				listOf(InetAddress.getByName(pingIp).isReachable(Constants.PING_TIMEOUT.toInt()))
-			} else {
-				Timber.i("Pinging all peers")
-				config.peers.map { peer ->
-					peer.isReachable(isIpv4Preferred)
-				}
+	suspend fun pingTunnel(context: CoroutineContext): List<Boolean> = withContext(context) {
+		val config = toWgConfig()
+		if (pingIp != null) {
+			Timber.i("Pinging custom ip")
+			listOf(InetAddress.getByName(pingIp).isReachable(Constants.PING_TIMEOUT.toInt()))
+		} else {
+			Timber.i("Pinging all peers")
+			config.peers.map { peer ->
+				peer.isReachable(isIpv4Preferred)
 			}
 		}
 	}

@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import com.zaneschepke.wireguardautotunnel.R
 
 @Composable
-fun LocationServicesDialog(show: Boolean, onDismiss: () -> Unit, onAttest: () -> Unit) {
+internal fun LocationServicesDialog(show: Boolean, onDismiss: () -> Unit, onAttest: () -> Unit) {
 	if (show) {
 		AlertDialog(
 			onDismissRequest = { onDismiss() },

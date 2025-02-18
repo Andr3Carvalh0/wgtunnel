@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ScrollDismissFab(icon: @Composable () -> Unit, isVisible: Boolean, onClick: () -> Unit) {
+internal fun ScrollDismissFab(icon: @Composable () -> Unit, isVisible: Boolean, onClick: () -> Unit) {
 	AnimatedVisibility(
 		visible = isVisible,
 		enter = slideInVertically(initialOffsetY = { it * 2 }),

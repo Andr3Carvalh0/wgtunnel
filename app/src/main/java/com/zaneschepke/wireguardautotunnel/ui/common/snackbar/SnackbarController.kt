@@ -27,7 +27,7 @@ private val LocalSnackbarController = staticCompositionLocalOf {
 private val channel = Channel<SnackbarChannelMessage>(capacity = 1)
 
 @Composable
-fun SnackbarControllerProvider(content: @Composable (snackbarHost: SnackbarHostState) -> Unit) {
+internal fun SnackbarControllerProvider(content: @Composable (snackbarHost: SnackbarHostState) -> Unit) {
 	val snackHostState = remember { SnackbarHostState() }
 	val scope = rememberCoroutineScope()
 	val snackController = remember(scope) { SnackbarController(snackHostState, scope) }
@@ -57,10 +57,7 @@ fun SnackbarControllerProvider(content: @Composable (snackbarHost: SnackbarHostS
 }
 
 @Immutable
-class SnackbarController(
-	private val host: SnackbarHostState,
-	private val scope: CoroutineScope,
-) {
+internal class SnackbarController(private val host: SnackbarHostState, private val scope: CoroutineScope) {
 	companion object {
 		val current
 			@Composable
@@ -99,10 +96,10 @@ class SnackbarController(
 	}
 }
 
-data class SnackbarChannelMessage(
+internal data class SnackbarChannelMessage(
 	val message: StringValue,
 	val action: SnackbarAction?,
 	val duration: SnackbarDuration = SnackbarDuration.Short,
 )
 
-data class SnackbarAction(val title: String, val onActionPress: () -> Unit)
+internal data class SnackbarAction(val title: String, val onActionPress: () -> Unit)

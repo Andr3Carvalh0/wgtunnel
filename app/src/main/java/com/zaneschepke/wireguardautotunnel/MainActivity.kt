@@ -67,7 +67,7 @@ import javax.inject.Inject
 import kotlin.system.exitProcess
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
 
 	@Inject
 	lateinit var appStateRepository: AppStateRepository

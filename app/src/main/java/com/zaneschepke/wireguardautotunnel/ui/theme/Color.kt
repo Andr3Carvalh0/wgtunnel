@@ -10,10 +10,9 @@ val SilverTree = Color(0xFF6DB58B)
 val Plantation = Color(0xFF264A49)
 val Shark = Color(0xFF21272A)
 val BalticSea = Color(0xFF1C1B1F)
-val Brick = Color(0xFFCE4257)
 val Straw = Color(0xFFD4C483)
 
-sealed class ThemeColors(
+internal sealed class ThemeColors(
 	val background: Color,
 	val surface: Color,
 	val primary: Color,

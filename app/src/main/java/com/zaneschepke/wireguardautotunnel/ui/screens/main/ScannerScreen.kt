@@ -14,7 +14,7 @@ import com.zaneschepke.wireguardautotunnel.ui.common.navigation.LocalNavControll
 import com.zaneschepke.wireguardautotunnel.viewmodel.ScannerViewModel
 
 @Composable
-fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
+internal fun ScannerScreen(viewModel: ScannerViewModel = hiltViewModel()) {
 	val context = LocalContext.current
 	val navController = LocalNavController.current
 
