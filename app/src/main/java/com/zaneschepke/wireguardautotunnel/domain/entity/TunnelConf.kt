@@ -55,8 +55,7 @@ internal data class TunnelConf(
 		}
 	}
 
-	fun isQuickConfigChanged(updatedConf: TunnelConf): Boolean = updatedConf.wgQuick != wgQuick ||
-		updatedConf.amQuick != amQuick
+	fun isQuickConfigChanged(updatedConf: TunnelConf): Boolean = updatedConf.wgQuick != wgQuick || updatedConf.amQuick != amQuick
 
 	fun isPingConfigMatching(updatedConf: TunnelConf): Boolean = updatedConf.isPingEnabled == isPingEnabled &&
 		pingIp == updatedConf.pingIp &&
