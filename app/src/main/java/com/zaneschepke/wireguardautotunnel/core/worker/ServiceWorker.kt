@@ -19,7 +19,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @HiltWorker
-class ServiceWorker @AssistedInject constructor(
+internal class ServiceWorker @AssistedInject constructor(
 	@Assisted private val context: Context,
 	@Assisted private val params: WorkerParameters,
 	private val serviceManager: ServiceManager,

@@ -55,8 +55,6 @@ internal data class TunnelConf(
 		}
 	}
 
-	fun isQuickConfigChanged(updatedConf: TunnelConf): Boolean = updatedConf.wgQuick != wgQuick || updatedConf.amQuick != amQuick
-
 	fun isPingConfigMatching(updatedConf: TunnelConf): Boolean = updatedConf.isPingEnabled == isPingEnabled &&
 		pingIp == updatedConf.pingIp &&
 		updatedConf.pingCooldown == pingCooldown &&
@@ -74,6 +72,8 @@ internal data class TunnelConf(
 			}
 		}
 	}
+
+	fun isQuickConfigMatching(configuration: TunnelConf): Boolean = configuration.wgQuick == wgQuick || configuration.amQuick == amQuick
 
 	companion object {
 		fun configFromWgQuick(wgQuick: String): Config {
